@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { Select, Button, Form, Modal } from "antd";
+import { Select, Button, Form, Modal, Row, Col } from "antd";
 import { getAll } from "../FetchServer";
 import { GlobalStyleSelect } from "./Styles";
 import CheckboxInicio from "./CheckboxInicio";
@@ -39,57 +39,69 @@ class Inicio extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { List, buttonVisible } = this.state;
-
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 10 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 14 },
+      },
+    };
     return (
-      <Form layout="inline" className="login-form">
+      <Form layout="inline" className="login-form" {...formItemLayout}>
         <Form.Item label="Seleccione la Obra">
-          {getFieldDecorator("titulo", {
-            rules: [
-              {
-                required: true,
-                message: "Por favor entre el Título de la Obra."
-              }
-            ]
-          })(
-            <GlobalStyleSelect>
-              <Select defaultValue="Ninguno" onChange={this.handleOnChange} style={{ width: '100%' }}>
-                <Option title="Ninguno" value="Ninguno">
-                  Ninguno
-                </Option>
-                {List.map(function(item, i) {
-                  //console.log("item");
-                  const a = (
-                    <Option key={i} title={item.Obra} value={item.Obra}>
-                      {item.Obra}
+          <Row gutter={8}>
+            <Col span={12}>
+              {getFieldDecorator("titulo", {
+                rules: [
+                  {
+                    required: true,
+                    message: "Por favor entre el Título de la Obra."
+                  }
+                ]
+              })(<div>
+                  <Select defaultValue="Ninguno" onChange={this.handleOnChange} style={{width:'100%'}}>
+                    <Option title="Ninguno" value="Ninguno">
+                      Ninguno
                     </Option>
-                  );
-                  return a;
-                })}
-              </Select>
-            </GlobalStyleSelect>
-          )}
-        </Form.Item>
-        <Form.Item>
-          <Button
-            style={{ float: "right" }}
-            title="Código del Carousel"
-            type="primary"
-            icon="upload"
-            onClick={this.handleOnClickInicio}
-          >
-            Crear
-          </Button>
-          <Modal
-            title="Seleccione los datos a enviar:"
-            onOk={this.handleOk}
-            visible={buttonVisible}
-            onCancel={this.handleOnClickCancelInicio}
-            width={400}
-            okText="Aceptar"
-            cancelText="Cancelar"
-          >
-            <CheckboxInicio />
-          </Modal>
+                    {List.map(function (item, i) {
+                      //console.log("item");
+                      const a = (
+                        <Option key={i} title={item.Obra} value={item.Obra}>
+                          {item.Obra}
+                        </Option>
+                      );
+                      return a;
+                    })}
+                  </Select>
+                  </div>
+              )}
+            </Col>
+            <Col span={12}>
+              <Button
+                style={{ float: "right", marginTop: 4 }}
+                title="Código del Carousel"
+                type="primary"
+                icon="upload"
+                onClick={this.handleOnClickInicio}
+              >
+                Crear
+              </Button>
+              <Modal
+                title="Seleccione los datos a enviar:"
+                onOk={this.handleOk}
+                visible={buttonVisible}
+                onCancel={this.handleOnClickCancelInicio}
+                width={400}
+                okText="Aceptar"
+                cancelText="Cancelar"
+              >
+                <CheckboxInicio />
+              </Modal>
+            </Col>
+          </Row>
         </Form.Item>
       </Form>
     );

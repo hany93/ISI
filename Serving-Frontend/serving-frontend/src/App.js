@@ -1,11 +1,11 @@
 import React from 'react';
 import { withRouter } from "react-router-dom";
-import MyUpload from "./Components/MyUpload.js";
+import Drawer from "./Components/Drawer/drawer";
 
 function App() {
   return (
     <div className="App">
-      <MyUpload />
+      <Drawer />
     </div>
   );
 }

@@ -3,7 +3,7 @@ const axios = require('axios');
 // const token = localStorage.getItem('token');
 // const tokenParse = JSON.parse(token);
 
-const ExAPI = 'http://localhost:3000';
+const ExAPI = 'http://localhost:3001';
 
 const getAll = () => {
 	//console.log(axios.get(`${ExAPI}/users/list`))
