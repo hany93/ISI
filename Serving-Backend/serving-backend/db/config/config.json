@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "postgres",
+    "database": "ide_agric_vcl",
+    "schema": "public",
+    "host": "192.168.0.11",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "database": "ide_agric_vcl",
+    "schema": "public",
+    "host": "192.168.0.11",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "database": "ide_agric_vcl",
+    "schema": "public",
+    "host": "192.168.0.11",
+    "dialect": "postgres"
+  }
+}
