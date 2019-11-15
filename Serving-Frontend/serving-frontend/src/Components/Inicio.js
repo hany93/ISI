@@ -37,73 +37,51 @@ class Inicio extends Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const { List, buttonVisible } = this.state;
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 10 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 14 },
-      },
-    };
     return (
-      <Form layout="inline" className="login-form" {...formItemLayout}>
-        <Form.Item label="Seleccione la Obra">
-          <Row gutter={8}>
-            <Col span={12}>
-              {getFieldDecorator("titulo", {
-                rules: [
-                  {
-                    required: true,
-                    message: "Por favor entre el Título de la Obra."
-                  }
-                ]
-              })(<div>
-                  <Select defaultValue="Ninguno" onChange={this.handleOnChange} style={{width:'100%'}}>
-                    <Option title="Ninguno" value="Ninguno">
-                      Ninguno
+      <Row gutter={5}>
+        <Col span={3}>
+          <h2 style={{color:'#1DA57A'}}>Seleccione la Obra:</h2>
+        </Col>
+        <Col span={11}>
+          <Select defaultValue="Ninguno" onChange={this.handleOnChange} style={{ width: '100%' }}>
+            <Option title="Ninguno" value="Ninguno">
+              Ninguno
                     </Option>
-                    {List.map(function (item, i) {
-                      //console.log("item");
-                      const a = (
-                        <Option key={i} title={item.Obra} value={item.Obra}>
-                          {item.Obra}
-                        </Option>
-                      );
-                      return a;
-                    })}
-                  </Select>
-                  </div>
-              )}
-            </Col>
-            <Col span={12}>
-              <Button
-                style={{ float: "right", marginTop: 4 }}
-                title="Código del Carousel"
-                type="primary"
-                icon="upload"
-                onClick={this.handleOnClickInicio}
-              >
-                Crear
+            {List.map(function (item, i) {
+              //console.log("item");
+              const a = (
+                <Option key={i} title={item.Obra} value={item.Obra}>
+                  {item.Obra}
+                </Option>
+              );
+              return a;
+            })}
+          </Select>
+        </Col>
+        <Col span={10}>
+          <Button
+            style={{ float: "left" }}
+            title="Código del Carousel"
+            type="primary"
+            icon="upload"
+            onClick={this.handleOnClickInicio}
+          >
+            Crear
               </Button>
-              <Modal
-                title="Seleccione los datos a enviar:"
-                onOk={this.handleOk}
-                visible={buttonVisible}
-                onCancel={this.handleOnClickCancelInicio}
-                width={400}
-                okText="Aceptar"
-                cancelText="Cancelar"
-              >
-                <CheckboxInicio />
-              </Modal>
-            </Col>
-          </Row>
-        </Form.Item>
-      </Form>
+          <Modal
+            title="Seleccione los datos a enviar:"
+            onOk={this.handleOk}
+            visible={buttonVisible}
+            onCancel={this.handleOnClickCancelInicio}
+            width={400}
+            okText="Aceptar"
+            cancelText="Cancelar"
+          >
+            <CheckboxInicio />
+          </Modal>
+        </Col>
+      </Row>
     );
   }
 }

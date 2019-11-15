@@ -39,7 +39,4 @@ const GlobalStylePagination = styled.div`
   float: right;
 }
 `
-const GlobalStyleSelect = styled.div`
-width: auto;
-`
-export { GlobalStyleL, GlobalStyleR, GlobalStyleLayout, GlobalStylePagination, GlobalStyleSelect }
+export { GlobalStyleL, GlobalStyleR, GlobalStyleLayout, GlobalStylePagination }

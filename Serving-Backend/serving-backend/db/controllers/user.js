@@ -40,7 +40,7 @@ module.exports = {
   // },
   list: function list(req, res) {
     return Inv_Sys_Ob.findAll({
-      attributes : ['id', "Obra", "Constructor", "Provincia", "Municipio", "ValorInversion", "OSDE", "Programa", "Tipo", "Estado", "Inversionista"]
+      attributes: ['id', "Obra", "Constructor", "Provincia", "Municipio", "ValorInversion", "OSDE", "Programa", "Tipo", "Estado", "Inversionista"]
       // include: [
       // 	{
       // 		model: models.entidad,
@@ -48,11 +48,11 @@ module.exports = {
       // 	}
       // ]
     })
-      .then(function(obra) {
+      .then(function (obra) {
         console.log(obra)
         return res.status(200).send(obra);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         res.status(400).send(error);
       });
   },
@@ -163,14 +163,14 @@ module.exports = {
       if (err) {
         if (err.code === "EEXIST") {
           console.log("existttttt");
-          fs.truncateSync(NOMBRE_ARCHIVO, 0, function() {
+          fs.truncateSync(NOMBRE_ARCHIVO, 0, function () {
             console.log("done");
           });
         }
       }
     });
 
-    fs.readdir(dest, function(err, files) {
+    fs.readdir(dest, function (err, files) {
       if (err) throw err;
       console.log("mmmm 1");
       for (const file of files) {
@@ -184,16 +184,16 @@ module.exports = {
     fs.appendFile(
       NOMBRE_ARCHIVO,
       '<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n  <meta http-equiv="X-UA-Compatible" content="IE=edge">\n  <meta name="viewport" content="width=device-width, initial-scale=1">\n  <title>' +
-        datosF.titulo +
-        '</title>\n  <link rel="stylesheet" type="text/css" href="css\\bootstrap.min.css">\n  <link rel="stylesheet" type="text/css" href="css\\carousel.css">\n</head>\n<body>\n  ',
+      datosF.titulo +
+      '</title>\n  <link rel="stylesheet" type="text/css" href="css\\bootstrap.min.css">\n  <link rel="stylesheet" type="text/css" href="css\\carousel.css">\n</head>\n<body>\n  ',
       "utf8",
-      function(err) {
+      function (err) {
         if (err) throw err;
         // if no error
         console.log("Data is appended to file successfully...1");
         let data0 =
           '<div id="myCarousel" class="carousel slide" data-ride="carousel">\n    <ol class="carousel-indicators">\n        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>\n';
-        fs.appendFile(NOMBRE_ARCHIVO, data0, "utf8", function(err) {
+        fs.appendFile(NOMBRE_ARCHIVO, data0, "utf8", function (err) {
           if (err) throw err;
           // if no error
           console.log("Data is appended to file successfully...2");
@@ -214,7 +214,7 @@ module.exports = {
             data1 =
               '    </ol>\n    <div class="carousel-inner" role="listbox">\n';
           }
-          fs.appendFile(NOMBRE_ARCHIVO, data1, "utf8", function(err) {
+          fs.appendFile(NOMBRE_ARCHIVO, data1, "utf8", function (err) {
             if (err) throw err;
             // if no error
             console.log("Data is appended to file successfully...4");
@@ -222,11 +222,11 @@ module.exports = {
             var nombre0 = arrayFotos[0].nombrefoto
               ? String(arrayFotos[0].nombrefoto + ".jpg")
               : String(
-                  arrayFotos[0].name.substring(
-                    0,
-                    arrayFotos[0].name.length - 4
-                  ) + ".jpg"
-                );
+                arrayFotos[0].name.substring(
+                  0,
+                  arrayFotos[0].name.length - 4
+                ) + ".jpg"
+              );
             var nombre1 = nombre0.replace(/\s/g, "_");
             let data2 =
               '        <div class="item active">\n          <img src="images/' +
@@ -249,7 +249,7 @@ module.exports = {
               `</strong></p>\n            <p id="car"><strong>` +
               datosF.date +
               `</strong></p>\n          </div>\n        </div>\n`;
-            fs.appendFile(NOMBRE_ARCHIVO, data2, "utf8", function(err) {
+            fs.appendFile(NOMBRE_ARCHIVO, data2, "utf8", function (err) {
               if (err) throw err;
               // if no error
               console.log("Data is appended to file successfully...5");
@@ -259,11 +259,11 @@ module.exports = {
                   var nombre4 = arrayFotos[i].nombrefoto
                     ? String(arrayFotos[i].nombrefoto + ".jpg")
                     : String(
-                        arrayFotos[i].name.substring(
-                          0,
-                          arrayFotos[i].name.length - 4
-                        ) + ".jpg"
-                      );
+                      arrayFotos[i].name.substring(
+                        0,
+                        arrayFotos[i].name.length - 4
+                      ) + ".jpg"
+                    );
                   var nombre3 = nombre4.replace(/\s/g, "_");
                   let data3 =
                     '        <div class="item">\n          <img src="images/' +
@@ -286,7 +286,7 @@ module.exports = {
                     `</strong></p>\n            <p id="car"><strong>` +
                     datosF.date +
                     `</strong></p>\n          </div>\n        </div>\n`;
-                  fs.appendFile(NOMBRE_ARCHIVO, data3, "utf8", function(err) {
+                  fs.appendFile(NOMBRE_ARCHIVO, data3, "utf8", function (err) {
                     if (err) throw err;
                     // if no error
                     console.log(
@@ -298,7 +298,7 @@ module.exports = {
                         NOMBRE_ARCHIVO,
                         '  </div>\n   <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">\n    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>\n    <span class="sr-only">Anterior</span>\n  </a>\n  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">\n    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>\n    <span class="sr-only">Siguiente</span>\n  </a>\n</div>\n',
                         "utf8",
-                        function(err) {
+                        function (err) {
                           if (err) throw err;
                           // if no error
                           console.log(
@@ -308,7 +308,7 @@ module.exports = {
                             NOMBRE_ARCHIVO,
                             '<script type="text/javascript" src="lib\\jquery.min.js"></script>\n<script type="text/javascript" src="lib\\bootstrap.min.js"></script>\n</body>\n</html>',
                             "utf8",
-                            function(err) {
+                            function (err) {
                               if (err) throw err;
                               // if no error
                               console.log(
@@ -326,20 +326,20 @@ module.exports = {
                                 );
                                 var nomb = arrayFotos[i].nombrefoto
                                   ? arrayFotos[i].nombrefoto.replace(
-                                      /\s/g,
-                                      "_"
-                                    ) + ".jpg"
+                                    /\s/g,
+                                    "_"
+                                  ) + ".jpg"
                                   : arrayFotos[i].name
-                                      .substring(
-                                        0,
-                                        arrayFotos[i].name.length - 4
-                                      )
-                                      .replace(/\s/g, "_") + ".jpg";
+                                    .substring(
+                                      0,
+                                      arrayFotos[i].name.length - 4
+                                    )
+                                    .replace(/\s/g, "_") + ".jpg";
                                 fs.writeFile(
                                   dest + nomb,
                                   cadena,
                                   "base64",
-                                  function(err) {
+                                  function (err) {
                                     if (err) throw err;
                                     console.log(
                                       "La imagen fue copiada exitosamente."
@@ -364,7 +364,7 @@ module.exports = {
                   NOMBRE_ARCHIVO,
                   "  </div>\n</div>\n",
                   "utf8",
-                  function(err) {
+                  function (err) {
                     if (err) throw err;
                     // if no error
                     console.log(
@@ -374,7 +374,7 @@ module.exports = {
                       NOMBRE_ARCHIVO,
                       '<script type="text/javascript" src="lib\\jquery.min.js"></script>\n<script type="text/javascript" src="lib\\bootstrap.min.js"></script>\n</body>\n</html>',
                       "utf8",
-                      function(err) {
+                      function (err) {
                         if (err) throw err;
                         // if no error
                         console.log(
@@ -392,11 +392,11 @@ module.exports = {
                           );
                           var nomb = arrayFotos[i].nombrefoto
                             ? arrayFotos[i].nombrefoto.replace(/\s/g, "_") +
-                              ".jpg"
+                            ".jpg"
                             : arrayFotos[i].name
-                                .substring(0, arrayFotos[i].name.length - 4)
-                                .replace(/\s/g, "_") + ".jpg";
-                          fs.writeFile(dest + nomb, cadena, "base64", function(
+                              .substring(0, arrayFotos[i].name.length - 4)
+                              .replace(/\s/g, "_") + ".jpg";
+                          fs.writeFile(dest + nomb, cadena, "base64", function (
                             err
                           ) {
                             if (err) throw err;
@@ -424,7 +424,7 @@ module.exports = {
     var arrayFile = req.body.filelist;
     var cadena = cad.substring(cad.indexOf("base64") + 7, cad.length);
 
-    fs.readdir(destPdf, function(err, files) {
+    fs.readdir(destPdf, function (err, files) {
       if (err) throw err;
       console.log("mmmm 1");
       for (const file of files) {
@@ -435,7 +435,7 @@ module.exports = {
       }
     });
 
-    fs.writeFile(destPdf + arrayFile[0].name, cadena, "base64", function(err) {
+    fs.writeFile(destPdf + arrayFile[0].name, cadena, "base64", function (err) {
       if (err) throw err;
       console.log("El file fue copiado exitosamente.");
       res.status(200).send(cadena);

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import locale from "antd/lib/date-picker/locale/es_ES";
 import "moment/locale/es";
+import { Carousel } from 'antd';
 import {
   Input,
   Upload,
@@ -172,7 +173,15 @@ class Carousels extends Component {
             <hr />
           </Row>
           <Row>
-            <div
+            <Carousel autoplay>
+              {console.log(arrayFotos)}
+              {arrayFotos.map(function (item, i) {
+                // console.log(item)
+                // console.log(item.thumbUrl)
+                return <div key={i}><img src={item.thumbUrl} /></div>;
+              })}
+            </Carousel>
+            {/* <div
               id="myCarousel"
               className="carousel slide"
               data-ride="carousel"
@@ -186,27 +195,27 @@ class Carousels extends Component {
                     className="active"
                   />
                 ) : (
-                  arrayFotos.map(function(item, i) {
-                    if (i === 0) {
-                      return (
-                        <li
-                          data-target="#myCarousel"
-                          data-slide-to={i}
-                          key={i}
-                          className="active"
-                        />
-                      );
-                    } else {
-                      return (
-                        <li
-                          data-target="#myCarousel"
-                          data-slide-to={i}
-                          key={i}
-                        />
-                      );
-                    }
-                  })
-                )}
+                    arrayFotos.map(function (item, i) {
+                      if (i === 0) {
+                        return (
+                          <li
+                            data-target="#myCarousel"
+                            data-slide-to={i}
+                            key={i}
+                            className="active"
+                          />
+                        );
+                      } else {
+                        return (
+                          <li
+                            data-target="#myCarousel"
+                            data-slide-to={i}
+                            key={i}
+                          />
+                        );
+                      }
+                    })
+                  )}
               </ol>
               <div
                 className="carousel-inner"
@@ -241,9 +250,9 @@ class Carousels extends Component {
                   </a>
                 </div>
               ) : (
-                <div />
-              )}
-            </div>
+                  <div />
+                )}
+            </div> */}
           </Row>
         </Col>
         <Col span={8} pull={15}>
