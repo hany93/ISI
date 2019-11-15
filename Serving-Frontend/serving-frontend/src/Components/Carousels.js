@@ -49,7 +49,6 @@ class Carousels extends Component {
       this.setState({
         TitObra: this.props.titulo
       });
-      //console.log(a.fileList);
       if (!err) {
         if (a.fileList && a.fileList.length > 0) {
           const values1 = {
@@ -61,12 +60,10 @@ class Carousels extends Component {
             filelist: this.state.fileList
           };
           var array = await editFile(datos); //modifica el iundex.html y copia las fotos hacia Documento/images
-          console.log(this.state.TitObra);
           let t = {
             TitObra: this.state.TitObra
           };
           var aux = await leer(t);
-          console.log(aux["data"]);
           this.setState({
             html: aux["data"],
             codCarousel: array["data"]["textC"],
@@ -113,7 +110,6 @@ class Carousels extends Component {
         var aux = array[a];
         aux["nombrefoto"] = e.target.value;
         this.setState({ previewImageName: e.target.value + ".jpg" });
-        //console.log(array[a]);
       }
     }
   };
@@ -174,10 +170,7 @@ class Carousels extends Component {
           </Row>
           <Row>
             <Carousel autoplay>
-              {console.log(arrayFotos)}
               {arrayFotos.map(function (item, i) {
-                // console.log(item)
-                // console.log(item.thumbUrl)
                 return <div key={i}><img src={item.thumbUrl} /></div>;
               })}
             </Carousel>

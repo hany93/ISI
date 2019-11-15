@@ -14,7 +14,6 @@ class Inicio extends Component {
 
   async componentDidMount() {
     var aux = await getAll();
-    console.log(aux["data"]);
     this.setState({
       List: aux["data"]
     });
@@ -32,7 +31,6 @@ class Inicio extends Component {
 
   handleOnClickCancelInicio = () => this.setState({ buttonVisible: false });
   handleOk = e => {
-    console.log(e);
     this.setState({ buttonVisible: false });
   };
 
@@ -49,7 +47,6 @@ class Inicio extends Component {
               Ninguno
                     </Option>
             {List.map(function (item, i) {
-              //console.log("item");
               const a = (
                 <Option key={i} title={item.Obra} value={item.Obra}>
                   {item.Obra}

@@ -6,7 +6,6 @@ const axios = require('axios');
 const ExAPI = 'http://localhost:3001';
 
 const getAll = () => {
-	//console.log(axios.get(`${ExAPI}/users/list`))
 	return axios.get(`${ExAPI}/users/list`);
 };
 

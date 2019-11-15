@@ -33,7 +33,6 @@ class Documento extends Component {
     }
 
     handleOnChangePag = page => {
-        //console.log(page);
         this.setState({
             pageNumber: page,
         });
@@ -49,7 +48,6 @@ class Documento extends Component {
                     fileUrl: fileUrl
                 };
                 var aa = await editFilePdf(datos);
-                //console.log(aa['data']);
                 this.setState({ base64Pdf: aa['data'], pageNumber: 1 });
             }
             );

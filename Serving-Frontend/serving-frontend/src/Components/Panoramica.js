@@ -15,9 +15,17 @@ class Panoramica extends Component {
   };
 
   handleCustom = ({ onSuccess }) => {
+    console.log("?")
+    console.log({ onSuccess })
+
     setTimeout(() => {
       onSuccess("ok");
     }, 0);
+
+    console.log(setTimeout(() => {
+      onSuccess("ok");
+    }, 0))
+
   };
 
   handleOnChange = async info => {
@@ -30,7 +38,6 @@ class Panoramica extends Component {
           fileUrl: fileUrl
         };
         //var aa = await editFilePdf(datos);
-        //console.log(aa['data']);
         //this.setState({ base64Pdf: aa['data'], pageNumber: 1 });
       });
       message.success("El archivo ha sido cargado satisfactoriamente.");
@@ -40,7 +47,7 @@ class Panoramica extends Component {
     this.setState({ fileList: [...info.fileList] });
   };
 
-  handleOnRemove = () => {};
+  handleOnRemove = () => { };
 
   render() {
     const Dragger = Upload.Dragger;
