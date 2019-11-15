@@ -4,7 +4,8 @@ const models = require("./../models"),
   Inv_Sys_Ob = models.INVERS_Sym_Obras,
   fs = require("fs"),
   dest = "./Documentos/Carousel/images/",
-  destPdf = "./Documentos/Pdf/";
+  destPdf = "./Documentos/Pdf/",
+  pano = "./Documentos/Pano/";
 
 // var jwt = require("jsonwebtoken");
 
@@ -451,5 +452,40 @@ module.exports = {
       // 	}
       // });
     });
+  },
+
+  sendPanoXML: function editFilePdf(req, res) {
+    var cad = String(req.body.fileUrl);
+    var arrayFile = req.body.filelist;
+    var cadena = cad.substring(cad.indexOf("base64") + 7, cad.length);
+
+    fs.readdir(pano, function (err, files) {
+      if (err) throw err;
+      console.log("mmmm 1");
+      for (const file of files) {
+        fs.unlink(pano + file, err => {
+          if (err) throw err;
+          console.log("nnnn 2");
+        });
+      }
+    });
+
+    fs.writeFile(pano + arrayFile[0].name, cadena, "base64", function (err) {
+      if (err) throw err;
+      console.log("El file fue copiado exitosamente.");
+      res.status(200).send(cadena);
+      //res.redirect('http://localhost:3000/users/leera');
+      // fs.readFile(pano + arrayFile[0].name, (err, data) => {
+      // 	if (err) {
+      // 		console.log('error: ', err);
+      // 	} else {
+      // 		console.log("El contenido es: " + pano + arrayFile[0].name + "......" + __dirname);
+      // 		// var options = {
+      // 		// 	root: pano
+      // 		// };
+      // 	}
+      // });
+    });
   }
+
 };

@@ -32,7 +32,7 @@ const getAll = () => {
 // };
 
 const leer = (values) => {
-	return axios.post(`${ExAPI}/users/leer`,values);
+	return axios.post(`${ExAPI}/users/leer`, values);
 };
 
 const editFile = (values) => {
@@ -43,5 +43,9 @@ const editFilePdf = (values) => {
 	return axios.post(`${ExAPI}/users/editFilePdf`, values);
 };
 
+const sendPanoXML = (values) => {
+	return axios.post(`${ExAPI}/users/sendPanoXML`, values);
+};
+
 export default ExAPI;
-export { getAll, leer, editFile, editFilePdf };
+export { getAll, leer, editFile, editFilePdf, sendPanoXML };

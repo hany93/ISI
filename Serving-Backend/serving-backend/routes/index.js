@@ -35,5 +35,7 @@ router.post('/users/editFile', controllers.editFile);
 
 router.post('/users/editFilePdf', controllers.editFilePdf);
 
+router.post('/users/sendPanoXML', controllers.sendPanoXML);
+
 module.exports = router;
 

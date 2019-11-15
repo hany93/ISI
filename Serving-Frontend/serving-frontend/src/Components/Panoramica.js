@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { Upload, Icon, message, Row, Col, Button } from "antd";
-import { editFilePdf } from "../FetchServer";
+import { sendPanoXML } from "../FetchServer";
 
 function getBase64(file, callback) {
   const reader = new FileReader();
@@ -11,24 +11,24 @@ function getBase64(file, callback) {
 
 class Panoramica extends Component {
   state = {
-    fileList: []
+    fileList: [],
+    file: ''
   };
 
   handleCustom = ({ onSuccess }) => {
-    console.log("?")
-    console.log({ onSuccess })
-
     setTimeout(() => {
       onSuccess("ok");
     }, 0);
-
-    console.log(setTimeout(() => {
-      onSuccess("ok");
-    }, 0))
-
   };
 
   handleOnChange = async info => {
+
+    if (info["fileList"].length) {
+      var auxFileList = []
+      auxFileList.push(info["fileList"][info["fileList"].length - 1])
+      info["fileList"] = auxFileList;
+    }
+
     let status = info.file.status;
     if (status === "done") {
       let fileList = [...info.fileList];
@@ -37,33 +37,38 @@ class Panoramica extends Component {
           filelist: fileList,
           fileUrl: fileUrl
         };
-        //var aa = await editFilePdf(datos);
-        //this.setState({ base64Pdf: aa['data'], pageNumber: 1 });
+        var aa = await sendPanoXML(datos);
+        this.setState({ base64Pdf: aa['data'], pageNumber: 1 });
+        console.log(aa)
       });
       message.success("El archivo ha sido cargado satisfactoriamente.");
     } else if (status === "error") {
       message.error(`El archivo no ha sido cargado satisfactoriamente..`);
     }
     this.setState({ fileList: [...info.fileList] });
+    this.setState({ file: info.file });
+    //console.log(this.state.file)
   };
 
-  handleOnRemove = () => { };
+  handleOnRemove = () => {
+  };
 
   render() {
-    const Dragger = Upload.Dragger;
+    const { Dragger } = Upload;
     const { fileList } = this.state;
     return (
       <div>
         <Row>
           <Col span={24}>
             <Dragger
-              name= "file"
-              accept= "application/pdf"
-              onChange= {this.handleOnChange}
-              onRemove= {this.handleOnRemove}
+              name="file"
+              accept=".xml"
+              onChange={this.handleOnChange}
+              onRemove={this.handleOnRemove}
               fileList={fileList}
               customRequest={this.handleCustom}
-              disabled={fileList.length === 1}
+              //disabled={fileList.length === 5}
+              showUploadList={{ showPreviewIcon: false, showDownloadIcon: false, showRemoveIcon: true }}
             >
               <p className="ant-upload-drag-icon">
                 <Icon type="inbox" />
