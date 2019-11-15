@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import locale from "antd/lib/date-picker/locale/es_ES";
 import "moment/locale/es";
-import { Carousel } from 'antd';
 import {
   Input,
   Upload,
@@ -126,129 +125,10 @@ class Carousels extends Component {
       previewImage,
       previewImageName,
       fileList,
-      html,
-      codCarousel,
-      arrayFotos,
-      buttonVisible,
-      icon
     } = this.state;
-    const { TextArea } = Input;
     return (
       <Row>
-        <Col span={15} push={9}>
-          <Row>
-            <Col span={15} push={8}>
-              <Button
-                style={{ float: "right" }}
-                title="Código del Carousel"
-                shape="circle"
-                icon={icon}
-                onClick={this.handleOnClick}
-              />
-              <Modal
-                visible={buttonVisible}
-                footer={null}
-                onCancel={this.handleOnClickCancel}
-                width={800}
-              >
-                <h3>Código del Carousel</h3>
-                <hr />
-                <TextArea
-                  value={html}
-                  autosize={{ minRows: 15, maxRows: 25 }}
-                  size="large"
-                  disabled
-                />
-              </Modal>
-            </Col>
-            <Col span={8} pull={15}>
-              <h2>Carousel</h2>
-            </Col>
-          </Row>
-          <Row>
-            <hr />
-          </Row>
-          <Row>
-            <Carousel autoplay>
-              {arrayFotos.map(function (item, i) {
-                return <div key={i}><img src={item.thumbUrl} /></div>;
-              })}
-            </Carousel>
-            {/* <div
-              id="myCarousel"
-              className="carousel slide"
-              data-ride="carousel"
-            >
-              <ol className="carousel-indicators">
-                {arrayFotos.length === 1 ? (
-                  <li
-                    data-target="#myCarousel"
-                    data-slide-to={0}
-                    key={0}
-                    className="active"
-                  />
-                ) : (
-                    arrayFotos.map(function (item, i) {
-                      if (i === 0) {
-                        return (
-                          <li
-                            data-target="#myCarousel"
-                            data-slide-to={i}
-                            key={i}
-                            className="active"
-                          />
-                        );
-                      } else {
-                        return (
-                          <li
-                            data-target="#myCarousel"
-                            data-slide-to={i}
-                            key={i}
-                          />
-                        );
-                      }
-                    })
-                  )}
-              </ol>
-              <div
-                className="carousel-inner"
-                role="listbox"
-                dangerouslySetInnerHTML={{ __html: codCarousel }}
-              />
-              {arrayFotos.length > 1 ? (
-                <div>
-                  <a
-                    className="left carousel-control"
-                    href="#myCarousel"
-                    role="button"
-                    data-slide="prev"
-                  >
-                    <span
-                      className="glyphicon glyphicon-chevron-left"
-                      aria-hidden="true"
-                    />
-                    <span className="sr-only">Anterior</span>
-                  </a>
-                  <a
-                    className="right carousel-control"
-                    href="#myCarousel"
-                    role="button"
-                    data-slide="next"
-                  >
-                    <span
-                      className="glyphicon glyphicon-chevron-right"
-                      aria-hidden="true"
-                    />
-                    <span className="sr-only">Siguiente</span>
-                  </a>
-                </div>
-              ) : (
-                  <div />
-                )}
-            </div> */}
-          </Row>
-        </Col>
-        <Col span={8} pull={15}>
+        <Col span={24}>
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Form.Item label="Fecha">
               {getFieldDecorator("date", {
@@ -275,6 +155,7 @@ class Carousels extends Component {
                   onPreview={this.handlePreview}
                   onChange={this.handleChange}
                   customRequest={this.handleCustom}
+                  showUploadList={{ showPreviewIcon: true, showDownloadIcon: false, showRemoveIcon:true }}
                 >
                   {uploadButton}
                 </Upload>

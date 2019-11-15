@@ -51,37 +51,16 @@ class Panoramica extends Component {
 
   render() {
     const Dragger = Upload.Dragger;
-    const props = {
-      name: "file",
-      accept: "application/pdf",
-      onChange: this.handleOnChange,
-      onRemove: this.handleOnRemove
-    };
     const { fileList } = this.state;
     return (
       <div>
         <Row>
-          <Col span={15} push={9}>
-            <Row>
-              <Col span={15} push={8}>
-                <Upload
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                  directory
-                >
-                  <Button>
-                    <Icon type="upload" /> Upload Directory
-                  </Button>
-                </Upload>
-              </Col>
-              <Col span={8} pull={15} />
-            </Row>
-            <Row>
-              <div style={{ overflow: "auto" }} />
-            </Row>
-          </Col>
-          <Col span={8} pull={15}>
+          <Col span={24}>
             <Dragger
-              {...props}
+              name= "file"
+              accept= "application/pdf"
+              onChange= {this.handleOnChange}
+              onRemove= {this.handleOnRemove}
               fileList={fileList}
               customRequest={this.handleCustom}
               disabled={fileList.length === 1}
