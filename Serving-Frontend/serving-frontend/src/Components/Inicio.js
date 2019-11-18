@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { Select, Button, Form, Modal, Row, Col } from "antd";
 import { getAll } from "../FetchServer";
-import { GlobalStyleSelect } from "./Styles";
 import CheckboxInicio from "./CheckboxInicio";
 const { Option } = Select;
 

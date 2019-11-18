@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { Upload, Icon, message, Row, Col, Button } from "antd";
+import { Upload, Icon, message, Row, Col } from "antd";
 import { sendPanoXML } from "../FetchServer";
 
 function getBase64(file, callback) {
@@ -41,9 +41,11 @@ class Panoramica extends Component {
         this.setState({ base64Pdf: aa['data'], pageNumber: 1 });
         console.log(aa)
       });
+      message.config({ top: 80 });
       message.success("El archivo ha sido cargado satisfactoriamente.");
     } else if (status === "error") {
-      message.error(`El archivo no ha sido cargado satisfactoriamente..`);
+      message.config({ top: 80 });
+      message.error(`El archivo no ha sido cargado satisfactoriamente.`);
     }
     this.setState({ fileList: [...info.fileList] });
     this.setState({ file: info.file });

@@ -14,7 +14,7 @@ import {
   Icon,
   Message
 } from "antd";
-import { leer, editFile } from "../FetchServer";
+import { editFile } from "../FetchServer";
 import { Date } from "core-js";
 
 class Carousels extends Component {
@@ -23,23 +23,12 @@ class Carousels extends Component {
     previewImage: "",
     previewImageName: "",
     fileList: [],
-    arrayFotos: [],
-    codCarousel: `<div> </div>`,
-    html: "",
-    buttonVisible: false,
-    icon: "eye",
     TitObra: ""
   };
 
   fecha = () => {
     return new Date().now();
   };
-
-  handleOnClick = () =>
-    this.setState({ icon: "eye-invisible", buttonVisible: true });
-
-  handleOnClickCancel = () =>
-    this.setState({ buttonVisible: false, icon: "eye" });
 
   handleSubmit = async e => {
     e.preventDefault();
@@ -58,29 +47,22 @@ class Carousels extends Component {
             datosform: values1,
             filelist: this.state.fileList
           };
-          var array = await editFile(datos); //modifica el iundex.html y copia las fotos hacia Documento/images
-          let t = {
-            TitObra: this.state.TitObra
-          };
-          var aux = await leer(t);
-          this.setState({
-            html: aux["data"],
-            codCarousel: array["data"]["textC"],
-            arrayFotos: array["data"]["datosC"]
-          });
-          Message.config({top:80});
-          Message.success("Proceso realizado satisfactoriamente.");
+          await editFile(datos); //modifica el iundex.html y copia las fotos hacia Documento/images
+          // let t = {
+          //   TitObra: this.state.TitObra
+          // };
+          // await leer(t);
+          this.props.form.resetFields();
+          this.setState({ fileList: [] });
         } else {
-          Message.config({top:80});
+          Message.config({ top: 80 });
           Message.error("Debe selecionar las imagenes.");
         }
-      }else {
-        Message.config({top:80});
+      } else {
+        Message.config({ top: 80 });
         Message.error("Debe introducir los datos.");
       }
     });
-    this.props.form.resetFields();
-    this.setState({ fileList: [] });
   };
 
   handlePreview = file => {
@@ -129,14 +111,8 @@ class Carousels extends Component {
       previewVisible,
       previewImage,
       previewImageName,
-      fileList,
-      html,
-      codCarousel,
-      arrayFotos,
-      buttonVisible,
-      icon
+      fileList
     } = this.state;
-    const { TextArea } = Input;
     return (
       <Row>
         <Col span={24}>
@@ -166,6 +142,7 @@ class Carousels extends Component {
                   onPreview={this.handlePreview}
                   onChange={this.handleChange}
                   customRequest={this.handleCustom}
+                  showUploadList={{ showPreviewIcon: true, showDownloadIcon: false, showRemoveIcon: true }}
                 >
                   {uploadButton}
                 </Upload>

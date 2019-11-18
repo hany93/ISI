@@ -5,7 +5,8 @@ const models = require("./../models"),
   fs = require("fs"),
   dest = "./Documentos/Carousel/images/",
   destPdf = "./Documentos/Pdf/",
-  pano = "./Documentos/Pano/";
+  pano = "./Documentos/Pano/",
+  open = require("open");
 
 // var jwt = require("jsonwebtoken");
 
@@ -158,146 +159,223 @@ module.exports = {
     var datosF = req.body.datosform;
     const NOMBRE_ARCHIVO =
       "Documentos/Carousel/" + datosF.titulo.replace(/\s/g, "_") + ".html";
-    var textoCarousel = ``;
-
-    fs.open(NOMBRE_ARCHIVO, "wx", (err, fd) => {
-      if (err) {
-        if (err.code === "EEXIST") {
-          console.log("existttttt");
-          fs.truncateSync(NOMBRE_ARCHIVO, 0, function () {
-            console.log("done");
-          });
-        }
-      }
-    });
+    //var textoCarousel = ``;
 
     fs.readdir(dest, function (err, files) {
       if (err) throw err;
       console.log("mmmm 1");
       for (const file of files) {
-        fs.unlink(dest + file, err => {
-          if (err) throw err;
-          console.log("nnnn 2");
-        });
+        //console.log(file)
+        let a = file.toString().substring(0, file.length - 6);
+        //console.log(a)
+        if (datosF.titulo.replace(/\s/g, "_") === a) {
+          fs.unlink(dest + file, err => {
+            if (err) throw err;
+            console.log("nnnn 2");
+          });
+        }
       }
     });
 
-    fs.appendFile(
-      NOMBRE_ARCHIVO,
-      '<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n  <meta http-equiv="X-UA-Compatible" content="IE=edge">\n  <meta name="viewport" content="width=device-width, initial-scale=1">\n  <title>' +
-      datosF.titulo +
-      '</title>\n  <link rel="stylesheet" type="text/css" href="css\\bootstrap.min.css">\n  <link rel="stylesheet" type="text/css" href="css\\carousel.css">\n</head>\n<body>\n  ',
-      "utf8",
-      function (err) {
-        if (err) throw err;
-        // if no error
-        console.log("Data is appended to file successfully...1");
-        let data0 =
-          '<div id="myCarousel" class="carousel slide" data-ride="carousel">\n    <ol class="carousel-indicators">\n        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>\n';
-        fs.appendFile(NOMBRE_ARCHIVO, data0, "utf8", function (err) {
+    fs.open(NOMBRE_ARCHIVO, "wx", (err, fd) => {
+      if (err) {
+        if (err.code === "EEXIST") {
+          console.log("existttttt");
+          fs.truncateSync(NOMBRE_ARCHIVO, 0);
+        }
+      }
+      fs.appendFile(
+        NOMBRE_ARCHIVO,
+        '<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n  <meta http-equiv="X-UA-Compatible" content="IE=edge">\n  <meta name="viewport" content="width=device-width, initial-scale=1">\n  <title>' +
+        datosF.titulo +
+        '</title>\n  <link rel="stylesheet" type="text/css" href="css\\bootstrap.min.css">\n  <link rel="stylesheet" type="text/css" href="css\\carousel.css">\n</head>\n<body>\n  ',
+        "utf8",
+        function (err) {
           if (err) throw err;
           // if no error
-          console.log("Data is appended to file successfully...2");
-          var data1 = "";
-          if (arrayFotos.length > 1) {
-            let data = "";
-            for (let i = 1; i < arrayFotos.length; i++) {
-              data =
-                data +
-                '        <li data-target="#myCarousel" data-slide-to="' +
-                i +
-                '"></li>\n';
-            }
-            data1 =
-              data +
-              '    </ol>\n    <div class="carousel-inner" role="listbox">\n';
-          } else {
-            data1 =
-              '    </ol>\n    <div class="carousel-inner" role="listbox">\n';
-          }
-          fs.appendFile(NOMBRE_ARCHIVO, data1, "utf8", function (err) {
+          console.log("Data is appended to file successfully...1");
+          let data0 =
+            '<div id="myCarousel" class="carousel slide" data-ride="carousel">\n    <ol class="carousel-indicators">\n        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>\n';
+          fs.appendFile(NOMBRE_ARCHIVO, data0, "utf8", function (err) {
             if (err) throw err;
             // if no error
-            console.log("Data is appended to file successfully...4");
-            //var nombre = arrayFotos[0].nombrefoto ? String(arrayFotos[0].nombrefoto + ".jpg") : String(arrayFotos[0].name.substring(0, arrayFotos[0].name.length - 4) + ".jpg");
-            var nombre0 = arrayFotos[0].nombrefoto
-              ? String(arrayFotos[0].nombrefoto + ".jpg")
-              : String(
-                arrayFotos[0].name.substring(
-                  0,
-                  arrayFotos[0].name.length - 4
-                ) + ".jpg"
-              );
-            var nombre1 = nombre0.replace(/\s/g, "_");
-            let data2 =
-              '        <div class="item active">\n          <img src="images/' +
-              nombre1 +
-              '" alt="Granos">\n          <div class="carousel-caption">\n            <h2>' +
-              datosF.titulo +
-              "</h2>\n            <p>" +
-              nombre0.substring(0, nombre0.length - 4) +
-              "</p>\n            <p>" +
-              datosF.date +
-              "</p>\n          </div>\n        </div>\n";
-            textoCarousel =
-              textoCarousel +
-              `        <div class="item active">\n          <img src="` +
-              arrayFotos[0].thumbUrl +
-              `" alt="Granos"/>\n          <div class="carousel-caption">\n            <h2 id="car"><strong>` +
-              datosF.titulo +
-              `</strong></h2>\n            <p id="car"><strong>` +
-              nombre0.substring(0, nombre0.length - 4) +
-              `</strong></p>\n            <p id="car"><strong>` +
-              datosF.date +
-              `</strong></p>\n          </div>\n        </div>\n`;
-            fs.appendFile(NOMBRE_ARCHIVO, data2, "utf8", function (err) {
+            console.log("Data is appended to file successfully...2");
+            var data1 = "";
+            if (arrayFotos.length > 1) {
+              let data = "";
+              for (let i = 1; i < arrayFotos.length; i++) {
+                data =
+                  data +
+                  '        <li data-target="#myCarousel" data-slide-to="' +
+                  i +
+                  '"></li>\n';
+              }
+              data1 =
+                data +
+                '    </ol>\n    <div class="carousel-inner" role="listbox">\n';
+            } else {
+              data1 =
+                '    </ol>\n    <div class="carousel-inner" role="listbox">\n';
+            }
+            fs.appendFile(NOMBRE_ARCHIVO, data1, "utf8", function (err) {
               if (err) throw err;
               // if no error
-              console.log("Data is appended to file successfully...5");
-              if (arrayFotos.length > 1) {
-                for (let i = 1; i < arrayFotos.length; i++) {
-                  //var nombre2 = arrayFotos[i].nombrefoto ? String(arrayFotos[i].nombrefoto + ".jpg") : String(arrayFotos[i].name.substring(0, arrayFotos[i].name.length - 4) + ".jpg");
-                  var nombre4 = arrayFotos[i].nombrefoto
-                    ? String(arrayFotos[i].nombrefoto + ".jpg")
-                    : String(
-                      arrayFotos[i].name.substring(
-                        0,
-                        arrayFotos[i].name.length - 4
-                      ) + ".jpg"
-                    );
-                  var nombre3 = nombre4.replace(/\s/g, "_");
-                  let data3 =
-                    '        <div class="item">\n          <img src="images/' +
-                    nombre3 +
-                    '" alt="Granos">\n          <div class="carousel-caption">\n            <h2>' +
-                    datosF.titulo +
-                    "</h2>\n            <p>" +
-                    nombre4.substring(0, nombre4.length - 4) +
-                    "</p>\n            <p>" +
-                    datosF.date +
-                    "</p>\n          </div>\n        </div>\n";
-                  textoCarousel =
-                    textoCarousel +
-                    `        <div class="item">\n          <img src="` +
-                    arrayFotos[i].thumbUrl +
-                    `" alt="Granos"/>\n          <div class="carousel-caption">\n            <h2 id="car"><strong>` +
-                    datosF.titulo +
-                    `</strong></h2>\n            <p id="car"><strong>` +
-                    nombre4.substring(0, nombre4.length - 4) +
-                    `</strong></p>\n            <p id="car"><strong>` +
-                    datosF.date +
-                    `</strong></p>\n          </div>\n        </div>\n`;
-                  fs.appendFile(NOMBRE_ARCHIVO, data3, "utf8", function (err) {
-                    if (err) throw err;
-                    // if no error
-                    console.log(
-                      "Data is appended to file successfullyyyyyyyyyyyyyy."
-                    );
-                    if (i + 1 === arrayFotos.length) {
-                      //textoCarousel = textoCarousel + `</div>`;
+              console.log("Data is appended to file successfully...4");
+              //var nombre = arrayFotos[0].nombrefoto ? String(arrayFotos[0].nombrefoto + ".jpg") : String(arrayFotos[0].name.substring(0, arrayFotos[0].name.length - 4) + ".jpg");
+              var nombre0 = arrayFotos[0].nombrefoto
+                ? String(arrayFotos[0].nombrefoto + ".jpg")
+                : String(
+                  arrayFotos[0].name.substring(
+                    0,
+                    arrayFotos[0].name.length - 4
+                  ) + ".jpg"
+                );
+              //var nombre1 = nombre0.replace(/\s/g, "_");
+              let data2 =
+                '        <div class="item active">\n          <img src="images/' +
+                datosF.titulo.replace(/\s/g, "_") + "_0" +
+                '.jpg" alt="Granos">\n          <div class="carousel-caption">\n            <h2>' +
+                datosF.titulo +
+                "</h2>\n            <p>" +
+                nombre0.substring(0, nombre0.length - 4) +
+                "</p>\n            <p>" +
+                datosF.date +
+                "</p>\n          </div>\n        </div>\n";
+              // textoCarousel =
+              //   textoCarousel +
+              //   `        <div class="item active">\n          <img src="` +
+              //   arrayFotos[0].thumbUrl +
+              //   `" alt="Granos"/>\n          <div class="carousel-caption">\n            <h2 id="car"><strong>` +
+              //   datosF.titulo +
+              //   `</strong></h2>\n            <p id="car"><strong>` +
+              //   nombre0.substring(0, nombre0.length - 4) +
+              //   `</strong></p>\n            <p id="car"><strong>` +
+              //   datosF.date +
+              //   `</strong></p>\n          </div>\n        </div>\n`;
+              fs.appendFile(NOMBRE_ARCHIVO, data2, "utf8", function (err) {
+                if (err) throw err;
+                // if no error
+                console.log("Data is appended to file successfully...5");
+                if (arrayFotos.length > 1) {
+                  for (let i = 1; i < arrayFotos.length; i++) {
+                    //var nombre2 = arrayFotos[i].nombrefoto ? String(arrayFotos[i].nombrefoto + ".jpg") : String(arrayFotos[i].name.substring(0, arrayFotos[i].name.length - 4) + ".jpg");
+                    var nombre4 = arrayFotos[i].nombrefoto
+                      ? String(arrayFotos[i].nombrefoto + ".jpg")
+                      : String(
+                        arrayFotos[i].name.substring(
+                          0,
+                          arrayFotos[i].name.length - 4
+                        ) + ".jpg"
+                      );
+                    //var nombre3 = nombre4.replace(/\s/g, "_");
+                    let data3 =
+                      '        <div class="item">\n          <img src="images/' +
+                      datosF.titulo.replace(/\s/g, "_") + "_" + i +
+                      '.jpg" alt="Granos">\n          <div class="carousel-caption">\n            <h2>' +
+                      datosF.titulo +
+                      "</h2>\n            <p>" +
+                      nombre4.substring(0, nombre4.length - 4) +
+                      "</p>\n            <p>" +
+                      datosF.date +
+                      "</p>\n          </div>\n        </div>\n";
+                    // textoCarousel =
+                    //   textoCarousel +
+                    //   `        <div class="item">\n          <img src="` +
+                    //   arrayFotos[i].thumbUrl +
+                    //   `" alt="Granos"/>\n          <div class="carousel-caption">\n            <h2 id="car"><strong>` +
+                    //   datosF.titulo +
+                    //   `</strong></h2>\n            <p id="car"><strong>` +
+                    //   nombre4.substring(0, nombre4.length - 4) +
+                    //   `</strong></p>\n            <p id="car"><strong>` +
+                    //   datosF.date +
+                    //   `</strong></p>\n          </div>\n        </div>\n`;
+                    fs.appendFile(NOMBRE_ARCHIVO, data3, "utf8", function (err) {
+                      if (err) throw err;
+                      // if no error
+                      console.log(
+                        "Data is appended to file successfullyyyyyyyyyyyyyy."
+                      );
+                      if (i + 1 === arrayFotos.length) {
+                        //textoCarousel = textoCarousel + `</div>`;
+                        fs.appendFile(
+                          NOMBRE_ARCHIVO,
+                          '  </div>\n   <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">\n    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>\n    <span class="sr-only">Anterior</span>\n  </a>\n  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">\n    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>\n    <span class="sr-only">Siguiente</span>\n  </a>\n</div>\n',
+                          "utf8",
+                          function (err) {
+                            if (err) throw err;
+                            // if no error
+                            console.log(
+                              "Data is appended to file successfullyyyyyyyyyyyyyy."
+                            );
+                            fs.appendFile(
+                              NOMBRE_ARCHIVO,
+                              '<script type="text/javascript" src="lib\\jquery.min.js"></script>\n<script type="text/javascript" src="lib\\bootstrap.min.js"></script>\n</body>\n</html>',
+                              "utf8",
+                              function (err) {
+                                if (err) throw err;
+                                // if no error
+                                console.log(
+                                  "Data is appended to file successfullyyyyyyyyyyyyyy."
+                                );
+                                // var d = {
+                                // 	filelist: arrayFotos
+                                // };
+                                //copyFotos(d);
+                                for (let i = 0; i < arrayFotos.length; i++) {
+                                  var cad = String(arrayFotos[i].thumbUrl);
+                                  var cadena = cad.substring(
+                                    cad.indexOf("base64") + 7,
+                                    cad.length
+                                  );
+                                  // var nomb = arrayFotos[i].nombrefoto
+                                  //   ? arrayFotos[i].nombrefoto.replace(
+                                  //     /\s/g,
+                                  //     "_"
+                                  //   ) + ".jpg"
+                                  //   : arrayFotos[i].name
+                                  //     .substring(
+                                  //       0,
+                                  //       arrayFotos[i].name.length - 4
+                                  //     )
+                                  //     .replace(/\s/g, "_") + ".jpg";
+                                  fs.writeFile(
+                                    dest + datosF.titulo.replace(/\s/g, "_") + "_" + i + ".jpg",
+                                    cadena,
+                                    "base64",
+                                    function (err) {
+                                      if (err) throw err;
+                                      console.log(
+                                        "La imagen fue copiada exitosamente."
+                                      );
+                                    }
+                                  );
+                                }
+                                (async () => {
+                                  // Opens the URL in the default browser.
+                                  await open(encodeURI(NOMBRE_ARCHIVO), { app: 'chrome' });
+                                })();
+                                return res.status(200).send();
+                              }
+                            );
+                          }
+                        );
+                      }
+                    });
+                  }
+                } else {
+                  fs.appendFile(
+                    NOMBRE_ARCHIVO,
+                    "  </div>\n</div>\n",
+                    "utf8",
+                    function (err) {
+                      if (err) throw err;
+                      // if no error
+                      console.log(
+                        "Data is appended to file successfullyyyyyyyyyyyyyy."
+                      );
                       fs.appendFile(
                         NOMBRE_ARCHIVO,
-                        '  </div>\n   <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">\n    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>\n    <span class="sr-only">Anterior</span>\n  </a>\n  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">\n    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>\n    <span class="sr-only">Siguiente</span>\n  </a>\n</div>\n',
+                        '<script type="text/javascript" src="lib\\jquery.min.js"></script>\n<script type="text/javascript" src="lib\\bootstrap.min.js"></script>\n</body>\n</html>',
                         "utf8",
                         function (err) {
                           if (err) throw err;
@@ -305,120 +383,45 @@ module.exports = {
                           console.log(
                             "Data is appended to file successfullyyyyyyyyyyyyyy."
                           );
-                          fs.appendFile(
-                            NOMBRE_ARCHIVO,
-                            '<script type="text/javascript" src="lib\\jquery.min.js"></script>\n<script type="text/javascript" src="lib\\bootstrap.min.js"></script>\n</body>\n</html>',
-                            "utf8",
-                            function (err) {
+                          // var d = {
+                          // 	filelist: arrayFotos
+                          // };
+                          //copyFotos(d);
+                          for (let i = 0; i < arrayFotos.length; i++) {
+                            var cad = String(arrayFotos[i].thumbUrl);
+                            var cadena = cad.substring(
+                              cad.indexOf("base64") + 7,
+                              cad.length
+                            );
+                            // var nomb = arrayFotos[i].nombrefoto
+                            //   ? arrayFotos[i].nombrefoto.replace(/\s/g, "_") +
+                            //   ".jpg"
+                            //   : arrayFotos[i].name
+                            //     .substring(0, arrayFotos[i].name.length - 4)
+                            //     .replace(/\s/g, "_") + ".jpg";
+                            fs.writeFile(dest + datosF.titulo.replace(/\s/g, "_") + "_" + i + ".jpg", cadena, "base64", function (
+                              err
+                            ) {
                               if (err) throw err;
-                              // if no error
-                              console.log(
-                                "Data is appended to file successfullyyyyyyyyyyyyyy."
-                              );
-                              // var d = {
-                              // 	filelist: arrayFotos
-                              // };
-                              //copyFotos(d);
-                              for (let i = 0; i < arrayFotos.length; i++) {
-                                var cad = String(arrayFotos[i].thumbUrl);
-                                var cadena = cad.substring(
-                                  cad.indexOf("base64") + 7,
-                                  cad.length
-                                );
-                                var nomb = arrayFotos[i].nombrefoto
-                                  ? arrayFotos[i].nombrefoto.replace(
-                                    /\s/g,
-                                    "_"
-                                  ) + ".jpg"
-                                  : arrayFotos[i].name
-                                    .substring(
-                                      0,
-                                      arrayFotos[i].name.length - 4
-                                    )
-                                    .replace(/\s/g, "_") + ".jpg";
-                                fs.writeFile(
-                                  dest + nomb,
-                                  cadena,
-                                  "base64",
-                                  function (err) {
-                                    if (err) throw err;
-                                    console.log(
-                                      "La imagen fue copiada exitosamente."
-                                    );
-                                  }
-                                );
-                              }
-                              let datosCarousel = {
-                                textC: textoCarousel,
-                                datosC: arrayFotos
-                              };
-                              return res.status(200).send(datosCarousel);
-                            }
-                          );
+                              console.log("La imagen fue copiada exitosamente.");
+                            });
+                          }
+                          (async () => {
+                            // Opens the URL in the default browser.
+                            await open(encodeURI(NOMBRE_ARCHIVO), { app: 'chrome' });
+                          })();
+                          return res.status(200).send();
                         }
                       );
                     }
-                  });
+                  );
                 }
-              } else {
-                fs.appendFile(
-                  NOMBRE_ARCHIVO,
-                  "  </div>\n</div>\n",
-                  "utf8",
-                  function (err) {
-                    if (err) throw err;
-                    // if no error
-                    console.log(
-                      "Data is appended to file successfullyyyyyyyyyyyyyy."
-                    );
-                    fs.appendFile(
-                      NOMBRE_ARCHIVO,
-                      '<script type="text/javascript" src="lib\\jquery.min.js"></script>\n<script type="text/javascript" src="lib\\bootstrap.min.js"></script>\n</body>\n</html>',
-                      "utf8",
-                      function (err) {
-                        if (err) throw err;
-                        // if no error
-                        console.log(
-                          "Data is appended to file successfullyyyyyyyyyyyyyy."
-                        );
-                        // var d = {
-                        // 	filelist: arrayFotos
-                        // };
-                        //copyFotos(d);
-                        for (let i = 0; i < arrayFotos.length; i++) {
-                          var cad = String(arrayFotos[i].thumbUrl);
-                          var cadena = cad.substring(
-                            cad.indexOf("base64") + 7,
-                            cad.length
-                          );
-                          var nomb = arrayFotos[i].nombrefoto
-                            ? arrayFotos[i].nombrefoto.replace(/\s/g, "_") +
-                            ".jpg"
-                            : arrayFotos[i].name
-                              .substring(0, arrayFotos[i].name.length - 4)
-                              .replace(/\s/g, "_") + ".jpg";
-                          fs.writeFile(dest + nomb, cadena, "base64", function (
-                            err
-                          ) {
-                            if (err) throw err;
-                            console.log("La imagen fue copiada exitosamente.");
-                          });
-                        }
-                        let datosCarousel = {
-                          textC: textoCarousel,
-                          datosC: arrayFotos
-                        };
-                        return res.status(200).send(datosCarousel);
-                      }
-                    );
-                  }
-                );
-              }
+              });
             });
           });
-        });
-      }
-    );
+        }
+      );
+    });
   },
   editFilePdf: function editFilePdf(req, res) {
     var cad = String(req.body.fileUrl);
