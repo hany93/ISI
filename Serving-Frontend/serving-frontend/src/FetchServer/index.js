@@ -6,7 +6,6 @@ const axios = require('axios');
 const ExAPI = 'http://localhost:3001';
 
 const getAll = () => {
-	//console.log(axios.get(`${ExAPI}/users/list`))
 	return axios.get(`${ExAPI}/users/list`);
 };
 
@@ -33,7 +32,7 @@ const getAll = () => {
 // };
 
 const leer = (values) => {
-	return axios.post(`${ExAPI}/users/leer`,values);
+	return axios.post(`${ExAPI}/users/leer`, values);
 };
 
 const editFile = (values) => {
@@ -44,5 +43,9 @@ const editFilePdf = (values) => {
 	return axios.post(`${ExAPI}/users/editFilePdf`, values);
 };
 
+const sendPanoXML = (values) => {
+	return axios.post(`${ExAPI}/users/sendPanoXML`, values);
+};
+
 export default ExAPI;
-export { getAll, leer, editFile, editFilePdf };
+export { getAll, leer, editFile, editFilePdf, sendPanoXML };

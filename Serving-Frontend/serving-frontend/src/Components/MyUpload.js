@@ -18,7 +18,6 @@ class MyUpload extends Component {
   };
 
   render() {
-    //console.log(this.props);
     const TabPane = Tabs.TabPane;
     const { Titulo, DisabledTabs } = this.state;
     return (
