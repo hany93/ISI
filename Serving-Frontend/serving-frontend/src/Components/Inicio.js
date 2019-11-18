@@ -45,7 +45,7 @@ class Inicio extends Component {
           <Select defaultValue="Ninguno" onChange={this.handleOnChange} style={{ width: '100%' }}>
             <Option title="Ninguno" value="Ninguno">
               Ninguno
-                    </Option>
+            </Option>
             {List.map((item, i) => {
               //console.log("item");
               const a = (
