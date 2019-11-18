@@ -71,10 +71,15 @@ class Carousels extends Component {
             codCarousel: array["data"]["textC"],
             arrayFotos: array["data"]["datosC"]
           });
+          Message.config({top:80});
           Message.success("Proceso realizado satisfactoriamente.");
         } else {
+          Message.config({top:80});
           Message.error("Debe selecionar las imagenes.");
         }
+      }else {
+        Message.config({top:80});
+        Message.error("Debe introducir los datos.");
       }
     });
     this.props.form.resetFields();
@@ -129,7 +134,13 @@ class Carousels extends Component {
       previewImage,
       previewImageName,
       fileList,
+      html,
+      codCarousel,
+      arrayFotos,
+      buttonVisible,
+      icon
     } = this.state;
+    const { TextArea } = Input;
     return (
       <Row>
         <Col span={24}>
@@ -159,7 +170,6 @@ class Carousels extends Component {
                   onPreview={this.handlePreview}
                   onChange={this.handleChange}
                   customRequest={this.handleCustom}
-                  showUploadList={{ showPreviewIcon: true, showDownloadIcon: false, showRemoveIcon:true }}
                 >
                   {uploadButton}
                 </Upload>

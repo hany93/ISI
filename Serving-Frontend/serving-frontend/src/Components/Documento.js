@@ -40,6 +40,13 @@ class Documento extends Component {
     }
 
     handleOnChange = async info => {
+        if (info["fileList"].length) {
+            var auxFileList = []
+            auxFileList.push(info["fileList"][info["fileList"].length - 1])
+            info["fileList"] = auxFileList;
+            //console.log(info)
+            //console.log(info.file.status)
+        }
         let status = info.file.status;
         if (status === 'done') {
             let fileList = [...info.fileList];
@@ -53,19 +60,21 @@ class Documento extends Component {
                 this.setState({ base64Pdf: aa['data'], pageNumber: 1 });
             }
             );
+            message.config({ top: 80 });
             message.success('El archivo ha sido cargado satisfactoriamente.');
         } else if (status === 'error') {
+            message.config({ top: 80 });
             message.error(`El archivo no ha sido cargado satisfactoriamente..`);
         }
         this.setState({ fileList: [...info.fileList] });
     }
 
     handleOnRemove = () => {
-        this.setState({ base64Pdf: '', pageNumber: 0, numPages: 0 });
+        this.setState({ base64Pdf: ' ', pageNumber: 0, numPages: 0 });
     }
 
     render() {
-        const Dragger = Upload.Dragger;
+        const { Dragger } = Upload;
         const props = {
             name: 'file',
             accept: 'application/pdf',
@@ -93,7 +102,7 @@ class Documento extends Component {
                                     file={`data:application/pdf;base64,${base64Pdf}`}
                                     error="No existe archivo."
                                     onLoadSuccess={this.onDocumentLoadSuccess}>
-                                    <Page width={1000} pageNumber={pageNumber}/>
+                                    <Page width={1000} pageNumber={pageNumber} />
                                 </Document>
                             </div>
                         </Row>
@@ -102,7 +111,8 @@ class Documento extends Component {
                         <Dragger {...props}
                             fileList={fileList}
                             customRequest={this.handleCustom}
-                            disabled={fileList.length === 1}>
+                            showUploadList={{ showPreviewIcon: false, showDownloadIcon: false, showRemoveIcon: true }}
+                        >
                             <p className="ant-upload-drag-icon">
                                 <Icon type="inbox" />
                             </p>

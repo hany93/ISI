@@ -41,14 +41,14 @@ class Inicio extends Component {
     return (
       <Row gutter={5}>
         <Col span={3}>
-          <h2 style={{color:'#1DA57A'}}>Seleccione la Obra:</h2>
+          <h2 style={{ color: '#1DA57A' }}>Seleccione la Obra:</h2>
         </Col>
         <Col span={11}>
           <Select defaultValue="Ninguno" onChange={this.handleOnChange} style={{ width: '100%' }}>
             <Option title="Ninguno" value="Ninguno">
               Ninguno
                     </Option>
-            {List.map(function (item, i) {
+            {List.map((item, i) => {
               //console.log("item");
               const a = (
                 <Option key={i} title={item.Obra} value={item.Obra}>

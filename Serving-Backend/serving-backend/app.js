@@ -15,6 +15,13 @@ app.use(cors());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// Serve any static files
+app.use(express.static(path.join(__dirname, './build')));
+// Handle React routing, return all requests to React app
+app.get('*', function (req, res) {
+	res.sendFile(path.join(__dirname, './build', 'index.html'));
+});
+
 app.use(logger('dev'));
 app.use(express.json({ limit: "100mb" }));
 app.use(express.urlencoded({ limit: "100mb" }));
