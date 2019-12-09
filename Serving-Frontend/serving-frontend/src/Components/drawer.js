@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -18,18 +18,17 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import MyUpload from '../MyUpload';
-import logo from "../../assets/images/reactlogo.png";
+import MyUpload from './MyUpload';
+import logo from "../assets/images/reactlogo.png";
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Grid from "@material-ui/core/Grid";
 
-import styles from "../../assets/components/sidebarStyle";
+import styles from "../assets/components/sidebarStyle";
 
 const useStyles = makeStyles(styles);
 
 export default function MiniDrawer() {
     const classes = useStyles();
-    const theme = useTheme();
     const [open, setOpen] = React.useState(true);
 
     const handleDrawerOpen = () => {

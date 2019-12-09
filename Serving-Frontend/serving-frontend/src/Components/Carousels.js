@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import React from "react";
+import { makeStyles } from '@material-ui/core/styles';
 import locale from "antd/lib/date-picker/locale/es_ES";
 import "moment/locale/es";
 import {
-  Input,
   Upload,
-  Modal,
   Row,
+  Modal,
+  Input,
   Col,
   Button,
   DatePicker,
@@ -15,108 +15,102 @@ import {
   Message
 } from "antd";
 import { editFile } from "../FetchServer";
-import { Date } from "core-js";
+//import { Date } from "core-js";
+import styles from "../assets/components/carouselStyle";
 
-class Carousels extends Component {
-  state = {
-    previewVisible: false,
-    previewImage: "",
-    previewImageName: "",
-    fileList: [],
-    TitObra: ""
-  };
+const useStyles = makeStyles(styles);
+const uploadButton = (
+  <div>
+    <Icon type="plus" />
+    <div className="ant-upload-text">Seleccione las imágenes</div>
+  </div>
+);
 
-  fecha = () => {
-    return new Date().now();
-  };
+export default Form.create({ name: "Carousels_form" })(function Carousels(props) {
+  const classes = useStyles();
+  const [fileList, setFileList] = React.useState([]);
+  //const [titObra, setTitObra] = React.useState("");
+  const [previewVisible, setPreviewVisible] = React.useState(false);
+  const [previewImage, setPreviewImage] = React.useState("");
+  const [previewImageName, setPreviewImageName] = React.useState("");
 
-  handleSubmit = async e => {
+  // const fecha = () => {
+  //   return new Date().now();
+  // };
+
+  const handleSubmit = async e => {
+    Message.config({ top: 80 });
     e.preventDefault();
-    this.props.form.validateFields(async (err, values) => {
+    props.form.validateFields(async (err, values) => {
       var a = values["file"];
-      this.setState({
-        TitObra: this.props.titulo
-      });
+      //setTitObra(props.titulo);
       if (!err) {
         if (a.fileList && a.fileList.length > 0) {
           const values1 = {
-            titulo: this.props.titulo,
+            titulo: props.titulo,
             date: values["date"].format("LL")
           };
           var datos = {
             datosform: values1,
-            filelist: this.state.fileList
+            filelist: fileList
           };
           await editFile(datos); //modifica el iundex.html y copia las fotos hacia Documento/images
           // let t = {
           //   TitObra: this.state.TitObra
           // };
           // await leer(t);
-          this.props.form.resetFields();
-          this.setState({ fileList: [] });
+          props.form.resetFields();
+          setFileList([]);
+          props.setButtonVerCarousel(true);
+          Message.success("Proceso realizado satisfactoriamente.");
         } else {
-          Message.config({ top: 80 });
           Message.error("Debe selecionar las imagenes.");
         }
       } else {
-        Message.config({ top: 80 });
         Message.error("Debe introducir los datos.");
       }
     });
   };
 
-  handlePreview = file => {
-    this.setState({
-      previewImage: file.url || file.thumbUrl,
-      previewVisible: true,
-      previewImageName: file.nombrefoto ? file.nombrefoto + ".jpg" : file.name
-    });
+  const handlePreview = file => {
+    setPreviewImage(file.url || file.thumbUrl)
+    setPreviewVisible(true)
+    setPreviewImageName(file.nombrefoto ? file.nombrefoto + ".jpg" : file.name)
   };
 
-  handleChange = ({ fileList }) => {
-    this.setState({ fileList });
+  const handleChange = ({ fileList }) => {
+    setFileList(fileList);
   };
 
-  handleCustom = ({ file, onSuccess }) => {
+  const handleCustom = ({ file, onSuccess }) => {
     setTimeout(() => {
       onSuccess("ok");
     }, 0);
   };
 
-  handleCancel = () => this.setState({ previewVisible: false });
+  const handleCancel = () => setPreviewVisible(false);
 
-  handlePressEnter = e => {
+  const handlePressEnter = e => {
     e.preventDefault();
-    var array = this.state.fileList;
+    var array = fileList;
     for (let a = 0; a < array.length; a++) {
       var nomb = array[a].nombrefoto
         ? array[a].nombrefoto + ".jpg"
         : array[a].name;
-      if (nomb === this.state.previewImageName) {
+      if (nomb === previewImageName) {
         var aux = array[a];
         aux["nombrefoto"] = e.target.value;
-        this.setState({ previewImageName: e.target.value + ".jpg" });
+        setPreviewImageName(e.target.value + ".jpg");
       }
     }
   };
-  render() {
-    const { getFieldDecorator } = this.props.form;
-    const uploadButton = (
-      <div>
-        <Icon type="plus" />
-        <div className="ant-upload-text">Seleccione las imágenes</div>
-      </div>
-    );
-    const {
-      previewVisible,
-      previewImage,
-      previewImageName,
-      fileList
-    } = this.state;
-    return (
+  const { getFieldDecorator } = props.form;
+
+  return (
+    <div>
       <Row>
         <Col span={24}>
-          <Form onSubmit={this.handleSubmit} className="login-form">
+          <Form onSubmit={handleSubmit} className="login-form">
             <Form.Item label="Fecha">
               {getFieldDecorator("date", {
                 rules: [
@@ -139,9 +133,9 @@ class Carousels extends Component {
                   multiple={true}
                   listType="picture-card"
                   fileList={fileList}
-                  onPreview={this.handlePreview}
-                  onChange={this.handleChange}
-                  customRequest={this.handleCustom}
+                  onPreview={handlePreview}
+                  onChange={handleChange}
+                  customRequest={handleCustom}
                   showUploadList={{ showPreviewIcon: true, showDownloadIcon: false, showRemoveIcon: true }}
                 >
                   {uploadButton}
@@ -161,9 +155,9 @@ class Carousels extends Component {
           <Modal
             visible={previewVisible}
             footer={null}
-            onCancel={this.handleCancel}
+            onCancel={handleCancel}
           >
-            <h3>{previewImageName}</h3>
+            <h2>{previewImageName}</h2>
             <hr />
             <img alt="example" style={{ width: "100%" }} src={previewImage} />
             <br />
@@ -172,15 +166,11 @@ class Carousels extends Component {
               type="text"
               placeholder={previewImageName}
               allowClear
-              onPressEnter={this.handlePressEnter}
+              onPressEnter={handlePressEnter}
             />
           </Modal>
         </Col>
       </Row>
-    );
-  }
-}
-
-const WrappedCarouselsForm = Form.create({ name: "Carousels_form" })(Carousels);
-
-export default withRouter(WrappedCarouselsForm);
+    </div>
+  );
+})

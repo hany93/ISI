@@ -37,5 +37,9 @@ router.post('/users/editFilePdf', controllers.editFilePdf);
 
 router.post('/users/sendPanoXML', controllers.sendPanoXML);
 
+router.post('/users/verCarousel', controllers.verCarousel);
+
+router.post('/users/existObra', controllers.existObra);
+
 module.exports = router;
 

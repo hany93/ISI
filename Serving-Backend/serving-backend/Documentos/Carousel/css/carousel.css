@@ -4,7 +4,8 @@
 }
 .carousel{
   background: #010604;
-  margin-top: 20px;
+  /* margin-top: 50px;
+  margin-bottom: 50px; */
 }
 .carousel .item{
   min-height: 280px; /* Prevent carousel from being distorted if for some reason image doesn't load */

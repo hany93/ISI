@@ -112,6 +112,7 @@ const sidebarStyle = theme => ({
     ...theme.mixins.toolbar,
   },
   content: {
+    height:window.height,
     flexGrow: 1,
     padding: theme.spacing(3),
   }

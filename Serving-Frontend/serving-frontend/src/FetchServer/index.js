@@ -47,5 +47,13 @@ const sendPanoXML = (values) => {
 	return axios.post(`${ExAPI}/users/sendPanoXML`, values);
 };
 
+const verCarousel = (values) => {
+	return axios.post(`${ExAPI}/users/verCarousel`, values);
+};
+
+const existObra = (values) => {
+	return axios.post(`${ExAPI}/users/existObra`, values);
+};
+
 export default ExAPI;
-export { getAll, leer, editFile, editFilePdf, sendPanoXML };
+export { getAll, leer, editFile, editFilePdf, sendPanoXML, verCarousel, existObra };

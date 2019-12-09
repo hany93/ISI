@@ -344,16 +344,14 @@ module.exports = {
                                     "base64",
                                     function (err) {
                                       if (err) throw err;
-                                      console.log(
-                                        "La imagen fue copiada exitosamente."
-                                      );
+                                      console.log("La imagen fue copiada exitosamente.");
+                                      // (async () => {
+                                      //   // Opens the URL in the default browser.
+                                      //   await open(encodeURI(NOMBRE_ARCHIVO), { app: 'chrome' });
+                                      // })();
                                     }
                                   );
                                 }
-                                (async () => {
-                                  // Opens the URL in the default browser.
-                                  await open(encodeURI(NOMBRE_ARCHIVO), { app: 'chrome' });
-                                })();
                                 return res.status(200).send();
                               }
                             );
@@ -404,12 +402,14 @@ module.exports = {
                             ) {
                               if (err) throw err;
                               console.log("La imagen fue copiada exitosamente.");
+                              // console.log(cad)
+                              // console.log(cadena)
+                              // (async () => {
+                              //   // Opens the URL in the default browser.
+                              //   await open(encodeURI(NOMBRE_ARCHIVO), { app: 'chrome' });
+                              // })();
                             });
                           }
-                          (async () => {
-                            // Opens the URL in the default browser.
-                            await open(encodeURI(NOMBRE_ARCHIVO), { app: 'chrome' });
-                          })();
                           return res.status(200).send();
                         }
                       );
@@ -488,6 +488,49 @@ module.exports = {
       // 		// };
       // 	}
       // });
+    });
+  },
+  verCarousel: function verCarousel(req, res) {
+    //console.log(req.body)
+    var cad = String(req.body.titulo);
+    const NOMBRE_ARCHIVO =
+      "Documentos/Carousel/" + cad.replace(/\s/g, "_") + ".html";
+    (async () => {
+      // Opens the URL in the default browser.
+      await open(encodeURI(NOMBRE_ARCHIVO), { app: 'chrome' });
+    })();
+    return res.status(200).send();
+  },
+  existObra: function existObra(req, res) {
+    //console.log(req.body.titulo)
+    var cad = String(req.body.titulo);
+    const NOMBRE_ARCHIVO_CAROUSEL =
+      "Documentos/Carousel/" + cad.replace(/\s/g, "_") + ".html";
+    const NOMBRE_ARCHIVO_PDF =
+      "Documentos/Pdf/" + cad.replace(/\s/g, "_") + ".pdf";
+    var data = {};
+    fs.stat(NOMBRE_ARCHIVO_CAROUSEL, function (err, stats) {
+      if (err === null) {
+        if (stats.isFile()) {
+          data.carousel = true;
+        } else {
+          data.carousel = false;
+        }
+      } else {
+        data.carousel = false;
+      }
+      fs.stat(NOMBRE_ARCHIVO_PDF, function (err, stats) {
+        if (err === null) {
+          if (stats.isFile()) {
+            data.pdf = true;
+          } else {
+            data.pdf = false;
+          }
+        } else {
+          data.pdf = false;
+        }
+        return res.status(200).send(data); 
+      });
     });
   }
 
