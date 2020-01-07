@@ -2,22 +2,23 @@
 //import User from "../models/user";
 const models = require("./../models"),
   Inv_Sys_Ob = models.INVERS_Sym_Obras,
+  Usuario = models.Usuario,
   fs = require("fs"),
   dest = "./Documentos/Carousel/images/",
   destPdf = "./Documentos/Pdf/",
   pano = "./Documentos/Pano/",
   open = require("open");
 
-// var jwt = require("jsonwebtoken");
+var jwt = require("jsonwebtoken");
 
-// function generateToken(user) {
-//   var u = {
-//     username: user.nickname
-//   };
-//   return jwt.sign(u, "password", {
-//     expiresIn: 60 * 60 * 24 // expires in 24 hours
-//   });
-// }
+function generateToken(user) {
+  var u = {
+    username: user.usuario
+  };
+  return jwt.sign(u, "password", {
+    expiresIn: 60 * 60 * 24 // expires in 24 hours
+  });
+}
 
 // function copyFotos(d) {
 // 	var arrayFotos = d.filelist;
@@ -25,21 +26,24 @@ const models = require("./../models"),
 // }
 
 module.exports = {
-  // userLog: function userLog(req, res) {
-  //   return User.findOne({
-  //     where: {
-  //       nickname: req.body.userName,
-  //       password: req.body.password
-  //     }
-  //   })
-  //     .then(async function(user) {
-  //       let token = await generateToken(user);
-  //       return res.status(200).send(token);
-  //     })
-  //     .catch(function(error) {
-  //       res.status(400).send(error);
-  //     });
-  // },
+  userLog: function userLog(req, res) {
+    console.log(req.body.usuario)
+    return Usuario.findOne({
+      attributes: ['usuario', "contrasenna"],
+      where: {
+        usuario: req.body.usuario,
+        contrasenna: req.body.contrasenna
+      }
+    })
+      .then(async function(user) {
+        console.log(user)
+        let token = await generateToken(user);
+        return res.status(200).send(token);
+      })
+      .catch(function(error) {
+        res.status(400).send(error);
+      });
+  },
   list: function list(req, res) {
     return Inv_Sys_Ob.findAll({
       attributes: ['id', "Obra", "Constructor", "Provincia", "Municipio", "ValorInversion", "OSDE", "Programa", "Tipo", "Estado", "Inversionista"]

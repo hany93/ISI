@@ -9,7 +9,6 @@ import List from '@material-ui/core/List';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import classNames from "classnames";
@@ -22,12 +21,16 @@ import MyUpload from './MyUpload';
 import logo from "../assets/images/reactlogo.png";
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Grid from "@material-ui/core/Grid";
-
+import Nuevo_Afectado from './Nuevo_Afectado/Nuevo_Afectado'
 import styles from "../assets/components/sidebarStyle";
+import { withRouter } from "react-router-dom";
+import IconButton from '@material-ui/core/IconButton';
+import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
+import { Menu, Dropdown, Icon } from 'antd';
 
 const useStyles = makeStyles(styles);
 
-export default function MiniDrawer() {
+export default withRouter(function MiniDrawer(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
 
@@ -45,6 +48,18 @@ export default function MiniDrawer() {
             </SvgIcon>
         );
     }
+    const handleClick = (e) => {
+        console.log(props)
+        localStorage.removeItem('token');
+        props.history.push('/');
+    };
+    const menu = (
+        <Menu>
+            <Menu.Item key="0">
+                <IconButton title='LogOut' style={{ color: 'inherit' }} onClick={handleClick}><ExitToAppRoundedIcon /></IconButton>
+            </Menu.Item>
+        </Menu>
+    );
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -67,8 +82,15 @@ export default function MiniDrawer() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap color="inherit">
+                    <Typography variant="h6" noWrap color="inherit" >
                         <span className={classes.title} style={{ fontSize: '20px', display: 'flex', alignItems: 'center', marginLeft: 10 }}><HomeIcon /> Inicio</span>
+                    </Typography>
+                    <Typography variant="h6" noWrap color="inherit" style={{ position: 'absolute', right: 0, marginRight: 20 }}>
+                        <Dropdown overlay={menu} trigger={['click']}>
+                            <a className="ant-dropdown-link" href="#" style={{ color: 'inherit' }}>
+                                <span className={classes.title} style={{ fontSize: '20px', display: 'flex', alignItems: 'center', marginLeft: 10 }}><ExitToAppRoundedIcon /> {props.user}</span>
+                            </a>
+                        </Dropdown>
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -121,10 +143,11 @@ export default function MiniDrawer() {
                 <div className={classes.toolbar} />
                 <Grid container>
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                        {/* <Nuevo_Afectado afectado='Persona'/> */}
                         <MyUpload />
                     </Grid>
                 </Grid>
             </main>
         </div>
     );
-}
+})

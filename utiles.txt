@@ -1,0 +1,1 @@
+sequelize-auto -o "./db/models" -d ide_agric_vcl -h 192.168.0.11 -u postgres -x postgres -p 5432 -e postgres -s public -t Usuario -c "./db/config/config.json"

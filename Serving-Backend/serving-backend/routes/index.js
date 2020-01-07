@@ -19,7 +19,7 @@ router.get('/', function (req, res, next) {
 router.get('/users/list', controllers.list);
 // router.get('/users/getById/:id', controllers.getById);
 
-// router.post('/users/userLog', controllers.userLog);
+router.post('/users/userLog', controllers.userLog);
 
 // router.post('/users/add', controllers.add);
 // //router.post('/users/add', secure, controllers.add);

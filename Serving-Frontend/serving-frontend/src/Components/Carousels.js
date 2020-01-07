@@ -110,7 +110,7 @@ export default Form.create({ name: "Carousels_form" })(function Carousels(props)
     <div>
       <Row>
         <Col span={24}>
-          <Form onSubmit={handleSubmit} className="login-form">
+          <Form onSubmit={handleSubmit}>
             <Form.Item label="Fecha">
               {getFieldDecorator("date", {
                 rules: [
@@ -146,7 +146,6 @@ export default Form.create({ name: "Carousels_form" })(function Carousels(props)
               <Button
                 type="primary"
                 htmlType="submit"
-                className="login-form-button"
               >
                 Aceptar
               </Button>

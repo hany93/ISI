@@ -3,7 +3,7 @@ const axios = require('axios');
 // const token = localStorage.getItem('token');
 // const tokenParse = JSON.parse(token);
 
-const ExAPI = 'http://localhost:3001';
+const ExAPI = 'http://192.168.1.112:3001';
 
 const getAll = () => {
 	return axios.get(`${ExAPI}/users/list`);
@@ -27,9 +27,9 @@ const getAll = () => {
 // 	return axios.put(`${ExAPI}/users/update`, id, values);
 // };
 
-// const userLog = (values) => {
-// 	return axios.post(`${ExAPI}/users/userLog`, values);
-// };
+const userLog = (values) => {
+	return axios.post(`${ExAPI}/users/userLog`, values);
+};
 
 const leer = (values) => {
 	return axios.post(`${ExAPI}/users/leer`, values);
@@ -56,4 +56,4 @@ const existObra = (values) => {
 };
 
 export default ExAPI;
-export { getAll, leer, editFile, editFilePdf, sendPanoXML, verCarousel, existObra };
+export { getAll, leer, editFile, editFilePdf, sendPanoXML, verCarousel, existObra, userLog };
