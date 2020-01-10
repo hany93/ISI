@@ -17,7 +17,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/users/list', controllers.list);
-// router.get('/users/getById/:id', controllers.getById);
+router.post('/users/getById', controllers.getById);
 
 router.post('/users/userLog', controllers.userLog);
 
@@ -27,7 +27,7 @@ router.post('/users/userLog', controllers.userLog);
 // //router.delete('/users/delete/:id', controllers.delete);
 // router.post('/users/delete', controllers.eliminar);
 
-// router.put('/users/update', controllers.update);
+router.put('/users/update', controllers.update);
 
 router.post('/users/leer', controllers.leer);
 

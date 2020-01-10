@@ -19,6 +19,14 @@ module.exports = function(sequelize, DataTypes) {
 		rol: {
 			type: DataTypes.STRING,
 			allowNull: true
+		},
+		createdAt: {
+			type: DataTypes.DATEONLY,
+			allowNull: true
+		},
+		updatedAt: {
+			type: DataTypes.DATEONLY,
+			allowNull: true
 		}
 	}, {
 		tableName: 'Usuario'

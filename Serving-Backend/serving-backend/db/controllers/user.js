@@ -4,6 +4,7 @@ const models = require("./../models"),
   Inv_Sys_Ob = models.INVERS_Sym_Obras,
   Usuario = models.Usuario,
   fs = require("fs"),
+  md5 = require('md5'),
   dest = "./Documentos/Carousel/images/",
   destPdf = "./Documentos/Pdf/",
   pano = "./Documentos/Pano/",
@@ -27,20 +28,21 @@ function generateToken(user) {
 
 module.exports = {
   userLog: function userLog(req, res) {
-    console.log(req.body.usuario)
+    //console.log(req.body.usuario)
     return Usuario.findOne({
-      attributes: ['usuario', "contrasenna"],
       where: {
         usuario: req.body.usuario,
-        contrasenna: req.body.contrasenna
+        contrasenna: md5(req.body.contrasenna)
       }
     })
-      .then(async function(user) {
-        console.log(user)
+      .then(async function (user) {
+        if (!user) {
+          return res.status(200).send('nook');
+        }
         let token = await generateToken(user);
         return res.status(200).send(token);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         res.status(400).send(error);
       });
   },
@@ -55,34 +57,35 @@ module.exports = {
       // ]
     })
       .then(function (obra) {
-        console.log(obra)
+        //console.log(obra)
         return res.status(200).send(obra);
       })
       .catch(function (error) {
         res.status(400).send(error);
       });
   },
-  // getById: function getById(req, res) {
-  //   return User.findById(req.params.id, {
-  //     // include: [
-  //     // 	{
-  //     // 		model: models.entidad,
-  //     // 		as: 'infrastructure'
-  //     // 	}
-  //     // ]
-  //   })
-  //     .then(function(user) {
-  //       if (!user) {
-  //         return res.status(404).send({
-  //           message: "user Not Found"
-  //         });
-  //       }
-  //       return res.status(200).send(user);
-  //     })
-  //     .catch(function(error) {
-  //       return res.status(400).send(error);
-  //     });
-  // },
+  getById: function getById(req, res) {
+    return Usuario.findOne({
+      where: {
+        usuario: req.body.usuario,
+        contrasenna: md5(req.body.contrasenna)
+      }
+    })
+      .then(function (user) {
+        if (!user) {
+          return res.status(404).send({
+            message: "user Not Found"
+          });
+        }
+        var data = {
+          id: user.id
+        };
+        return res.status(200).send(data);
+      })
+      .catch(function (error) {
+        return res.status(400).send(error);
+      });
+  },
   // add: function add(req, res) {
   //   return User.create({
   //     nickname: req.body.nickname,
@@ -118,34 +121,36 @@ module.exports = {
   //       return res.status(400).send(error);
   //     });
   // },
-  // update: function update(req, res) {
-  //   return User.findById(req.body.itemId)
-  //     .then(function(user) {
-  //       if (!user) {
-  //         return res.status(404).send({
-  //           message: "user Not Found"
-  //         });
-  //       }
-  //       return user
-  //         .update({
-  //           nickname: req.body.valuesForm.nickname,
-  //           password: req.body.valuesForm.password,
-  //           confirmpassword: req.body.valuesForm.confirm,
-  //           email: req.body.valuesForm.email
-  //         })
-  //         .then(function() {
-  //           return res.status(200).send(user);
-  //         })
-  //         .catch(function(error) {
-  //           return res.status(400).send(error);
-  //         });
-  //     })
-  //     .catch(function(error) {
-  //       return res.status(400).send(error);
-  //     });
-  // },
+  update: function update(req, res) {
+    //console.log(req.body)
+    return Usuario.findOne({
+      where: {
+        id: req.body.itemId
+      }
+    }).then(function (user) {
+      console.log(user)
+      if (!user) {
+        return res.status(404).send({
+          message: "user Not Found"
+        });
+      }
+      return user
+        .update({
+          contrasenna: md5(req.body.password)
+        })
+        .then(function () {
+          return res.status(200).send('ok');
+        })
+        .catch(function (error) {
+          return res.status(400).send(error + "uuupdate");
+        });
+    })
+      .catch(function (error) {
+        return res.status(400).send(error + "uuuser");
+      });
+  },
   leer: function leer(req, res) {
-    console.log(req.body);
+    //console.log(req.body);
     var nom = req.body.TitObra;
     const NOMBRE_ARCHIVO =
       "Documentos/Carousel/" + String(nom).replace(/\s/g, "_") + ".html";
@@ -153,7 +158,7 @@ module.exports = {
       if (err) {
         console.log("error: ", err);
       } else {
-        console.log("El contenido es: ", data);
+        //console.log("El contenido es: ", data);
         return res.status(200).send(data);
       }
     });
@@ -533,7 +538,7 @@ module.exports = {
         } else {
           data.pdf = false;
         }
-        return res.status(200).send(data); 
+        return res.status(200).send(data);
       });
     });
   }

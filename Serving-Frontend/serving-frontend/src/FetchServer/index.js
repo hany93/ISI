@@ -9,9 +9,9 @@ const getAll = () => {
 	return axios.get(`${ExAPI}/users/list`);
 };
 
-// const getById = () => {
-// 	return axios;
-// };
+const getById = (values) => {
+	return axios.post(`${ExAPI}/users/getById`, values);
+};
 
 // const add = (values) => {
 // 	return axios.post(`${ExAPI}/users/add`, values);
@@ -23,9 +23,9 @@ const getAll = () => {
 // 	return axios.post(`${ExAPI}/users/delete`, values);
 // };
 
-// const update = (id, values) => {
-// 	return axios.put(`${ExAPI}/users/update`, id, values);
-// };
+const update = (values) => {
+	return axios.put(`${ExAPI}/users/update`, values);
+};
 
 const userLog = (values) => {
 	return axios.post(`${ExAPI}/users/userLog`, values);
@@ -56,4 +56,4 @@ const existObra = (values) => {
 };
 
 export default ExAPI;
-export { getAll, leer, editFile, editFilePdf, sendPanoXML, verCarousel, existObra, userLog };
+export { getAll, leer, editFile, editFilePdf, sendPanoXML, verCarousel, existObra, userLog, update, getById };

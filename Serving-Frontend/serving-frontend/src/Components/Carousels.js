@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from '@material-ui/core/styles';
+//import { makeStyles } from '@material-ui/core/styles';
 import locale from "antd/lib/date-picker/locale/es_ES";
 import "moment/locale/es";
 import {
@@ -16,9 +16,9 @@ import {
 } from "antd";
 import { editFile } from "../FetchServer";
 //import { Date } from "core-js";
-import styles from "../assets/components/carouselStyle";
+//import styles from "../assets/components/carouselStyle";
 
-const useStyles = makeStyles(styles);
+//const useStyles = makeStyles(styles);
 const uploadButton = (
   <div>
     <Icon type="plus" />
@@ -27,7 +27,7 @@ const uploadButton = (
 );
 
 export default Form.create({ name: "Carousels_form" })(function Carousels(props) {
-  const classes = useStyles();
+  //const classes = useStyles();
   const [fileList, setFileList] = React.useState([]);
   //const [titObra, setTitObra] = React.useState("");
   const [previewVisible, setPreviewVisible] = React.useState(false);

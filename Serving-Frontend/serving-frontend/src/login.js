@@ -1,23 +1,23 @@
 import React, { useEffect } from "react";
 import { Form, Icon, Input, Button, Checkbox, Row, Col, Divider, Typography, message } from 'antd';
-import { makeStyles } from '@material-ui/core/styles';
+//import { makeStyles } from '@material-ui/core/styles';
 import './login.css';
 import Isi from './assets/images/reactlogo.png';
-import { userLog } from "./FetchServer";
+import { userLog, getById } from "./FetchServer";
 import { withRouter } from "react-router-dom";
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        '& .MuiTextField-root': {
-            margin: theme.spacing(1),
-            width: 200,
-        }
-    },
-}));
+// const useStyles = makeStyles(theme => ({
+//     root: {
+//         '& .MuiTextField-root': {
+//             margin: theme.spacing(1),
+//             width: 200,
+//         }
+//     },
+// }));
 
 export default withRouter(Form.create({ name: "Login_form" })(function Login(props) {
 
-    const classes = useStyles();
+    //const classes = useStyles();
 
     //const [dataInfoBasic, setDataInfoBasic] = React.useState({ nombre: '', apellidos: '', ci: '', direccion: '', municipio: 'Mariel', provincia: 'Artemisa' });
 
@@ -27,7 +27,7 @@ export default withRouter(Form.create({ name: "Login_form" })(function Login(pro
     // };
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
-    const [error, setError] = React.useState('');
+    //const [error, setError] = React.useState('');
 
     // const dismissError = () => {
     //     setError('');
@@ -36,6 +36,7 @@ export default withRouter(Form.create({ name: "Login_form" })(function Login(pro
     const handleSubmit = (evt) => {
         evt.preventDefault();
         props.form.validateFields(async (err, values) => {
+            //console.log(values)
             if (!err) {
                 //console.log('Received values of form: ', values);
                 var data = {
@@ -43,14 +44,23 @@ export default withRouter(Form.create({ name: "Login_form" })(function Login(pro
                     contrasenna: values.password
                 };
                 var token = await userLog(data);
-                if (token === null) {
+                //console.log(token)
+                if (token.data === 'nook') {
+                    message.config({
+                        top: 100
+                    });
                     message.error('Usuario o contraseña incorrectos');
-                }
-                if (token) {
+                } else {
                     localStorage.setItem('token', JSON.stringify(token.data));
                     localStorage.setItem('usuario', values.username);
-                    message.success('Usted está logueado');
-                    props.history.push('/App');
+                    var data = {
+                        usuario: values.username,
+                        contrasenna: values.password
+                    };
+                    var id = await getById(data)
+                    //console.log(id.data.id)
+                    localStorage.setItem('id', id.data.id);
+                    props.history.push('/Inicio');
                 }
             }
         });
@@ -89,7 +99,7 @@ export default withRouter(Form.create({ name: "Login_form" })(function Login(pro
     useEffect(() => {
         function asyncrona() {
             if (localStorage.getItem('token')) {
-                return props.history.push('/App');
+                return props.history.push('/Inicio');
             }
         }
         asyncrona()
@@ -103,7 +113,7 @@ export default withRouter(Form.create({ name: "Login_form" })(function Login(pro
             <Col span={9}></Col>
             <Col span={6}>
                 <Form onSubmit={handleSubmit} className="login-form">
-                    <Title level={4} style={{ textAlign: 'center' }}><img src={Isi} /></Title>
+                    <Title level={4} style={{ textAlign: 'center' }}><img src={Isi} alt='Icono'/></Title>
                     <Divider />
                     <Form.Item>
                         {getFieldDecorator('username', {
@@ -116,13 +126,13 @@ export default withRouter(Form.create({ name: "Login_form" })(function Login(pro
                             />,
                         )}
                     </Form.Item>
-                    <Form.Item>
+                    <Form.Item hasFeedback>
                         {getFieldDecorator('password', {
                             rules: [{ required: true, message: 'Por favor entre su contraseña!' }],
                         })(
-                            <Input
-                                prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                                type="password"
+                            <Input.Password
+                                prefix={<Icon type="lock"
+                                    style={{ color: 'rgba(0,0,0,.25)' }} />}
                                 placeholder="Contraseña"
                                 onChange={handleChange}
                             />,
@@ -131,11 +141,8 @@ export default withRouter(Form.create({ name: "Login_form" })(function Login(pro
                     <Form.Item>
                         {getFieldDecorator('remember', {
                             valuePropName: 'checked',
-                            initialValue: true,
+                            initialValue: false,
                         })(<Checkbox>Recordar</Checkbox>)}
-                        <a className="login-form-forgot" href="">
-                            Olvidó su contraseña...
-                        </a>
                         <Button type="primary" htmlType="submit" className="login-form-button">
                             Entrar
                         </Button>
