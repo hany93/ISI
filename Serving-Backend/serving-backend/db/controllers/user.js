@@ -1,5 +1,6 @@
 "use strict";
 //import User from "../models/user";
+//import {saveAs} from 'file-saver';
 const models = require("./../models"),
   Inv_Sys_Ob = models.INVERS_Sym_Obras,
   Usuario = models.Usuario,
@@ -8,7 +9,11 @@ const models = require("./../models"),
   dest = "./Documentos/Carousel/images/",
   destPdf = "./Documentos/Pdf/",
   pano = "./Documentos/Pano/",
-  open = require("open");
+  open = require("open"),
+  PizZip = require('pizzip'),
+  savefile = require('save-file'),
+  //fsaver = require('file-saver'),
+  Docxtemplater = require('docxtemplater');
 
 var jwt = require("jsonwebtoken");
 
@@ -27,6 +32,221 @@ function generateToken(user) {
 // }
 
 module.exports = {
+  generateDocx: function generateDocx(req, res) {
+    var content = fs.readFileSync('Documentos/Templates/example.docx', 'binary');
+
+    var zip = new PizZip(content);
+
+    var doc = new Docxtemplater();
+    doc.loadZip(zip).setOptions({
+      paragraphLoop: true,
+      linebreaks: true
+    });
+
+    //set the templateVariables
+    doc.setData({
+      nopdor: "123",
+      noprop: "70100901538",
+      resolucion: "RESOLUCION POR LA QUE OBTUVO LA TIERRA",
+      norma: "Norma Legal.",
+      d: "17",
+      m: "09",
+      a: "2019",
+      d1: "23",
+      m1: "11",
+      a1: "2019",
+      sector: "SECTOR: A9",
+      datos: [
+        {
+          "persona": "PROPIETARIO",
+          "nombre": "Andrea Martínez Díaz",
+          "entidad": "",
+          "dir": "Avenida 209 # 19 034 / 190 y 192, Pueblo Quiebra Hacha",
+          "mun": "Mariel",
+          "prov": "Artemisa"
+        },
+        {
+          "persona": "POSEEDOR",
+          "nombre": "Andrea Martínez Díaz",
+          "entidad": "",
+          "dir": "Avenida 209 # 19 034 / 190 y 192, Pueblo Quiebra Hacha",
+          "mun": "Mariel",
+          "prov": "Artemisa"
+        }
+      ],
+      areatp: "2 171.39",
+      areaa: "2 171.39",
+      areav: "119.04",
+      areatc: "97.00",
+      arrayareas: [
+        {
+          "nomb": "CORR",
+          "area": "6.99"
+        },
+        {
+          "nomb": "B EXT",
+          "area": "2.41"
+        },
+        {
+          "nomb": "CD",
+          "area": "7.00"
+        },
+        {
+          "nomb": "PAL",
+          "area": "5.64"
+        }
+      ],
+      pared: [{ pared: "Hormigón" }, { pared: "Mampostería" }, { pared: "Ladrillo" }, { pared: "Bloque" }, { pared: "Madera Acerrada" }, { pared: "Tabloncillo" }, { pared: "Tabla de Palma" }, { pared: "Otros Materiales" }],
+      cub: [{ cub: 'Hormigón' }, { cub: 'Bovedilla' }, { cub: 'Teja de Barro' }, { cub: 'Cubierta Acanalado de Fibro' }, { cub: 'Cubierta Acanalado Met.(Zing)' }, { cub: 'Papel de Fibro-asf' }, { cub: 'Guano' }, { cub: 'Otros Materiales' }],
+      caract: [{ caract: 'Losa' }, { caract: 'Vigas de Viguetas' }, { caract: 'Vigas de Madera' }, { caract: 'Semi – Viga de Hormigón' }, { caract: 'Viga de Metal' }, { caract: 'Maderas' }, { caract: 'Otros Materiales' }],
+      observaciones: "Corral-Tipo de Pared: (8) Planchas de Metal.\nPalomar-Tipo de Pared: (8) Planchas de Metal.",
+      elementosconst: [
+        {
+          elem: "Cuarto de desahogo",
+          tpared: "",
+          tcub: "",
+          tcaract: ""
+        },
+        {
+          elem: "Nave de secado",
+          tpared: "",
+          tcub: "",
+          tcaract: ""
+        },
+        {
+          elem: "Almacén",
+          tpared: "",
+          tcub: "",
+          tcaract: ""
+        },
+        {
+          elem: "Vivienda",
+          tpared: "2",
+          tcub: "4",
+          tcaract: ""
+        },
+        {
+          elem: "Cuarto de Taller",
+          tpared: "",
+          tcub: "",
+          tcaract: ""
+        },
+        {
+          elem: "Cochiquera",
+          tpared: "",
+          tcub: "",
+          tcaract: ""
+        },
+        {
+          elem: "Caseta de Motor",
+          tpared: "",
+          tcub: "",
+          tcaract: ""
+        },
+        {
+          elem: "Nave de Pollero",
+          tpared: "",
+          tcub: "",
+          tcaract: ""
+        },
+        {
+          elem: "Pozo",
+          tpared: "",
+          tcub: "",
+          tcaract: ""
+        },
+        {
+          elem: "Tanque (2)",
+          tpared: "",
+          tcub: "",
+          tcaract: ""
+        },
+        {
+          elem: "Nave de Conejo",
+          tpared: "",
+          tcub: "",
+          tcaract: ""
+        },
+        {
+          elem: "Palomar",
+          tpared: "6-8",
+          tcub: "",
+          tcaract: ""
+        },
+        {
+          elem: "Vaquería",
+          tpared: "",
+          tcub: "",
+          tcaract: ""
+        },
+        {
+          elem: "Corrales",
+          tpared: "8",
+          tcub: "",
+          tcaract: ""
+        },
+        {
+          elem: "Tanque elevado",
+          tpared: "",
+          tcub: "",
+          tcaract: ""
+        },
+        {
+          elem: "Cisterna",
+          tpared: "",
+          tcub: "",
+          tcaract: ""
+        },
+        {
+          elem: "Fosa",
+          tpared: "",
+          tcub: "",
+          tcaract: ""
+        }
+      ]
+    });
+
+    try {
+      // render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
+      doc.render()
+    }
+    catch (error) {
+      // The error thrown here contains additional information when logged with JSON.stringify (it contains a properties object containing all suberrors).
+      function replaceErrors(key, value) {
+        if (value instanceof Error) {
+          return Object.getOwnPropertyNames(value).reduce(function (error, key) {
+            error[key] = value[key];
+            return error;
+          }, {});
+        }
+        return value;
+      }
+      console.log(JSON.stringify({ error: error }, replaceErrors));
+
+      if (error.properties && error.properties.errors instanceof Array) {
+        const errorMessages = error.properties.errors.map(function (error) {
+          return error.properties.explanation;
+        }).join("\n");
+        console.log('errorMessages', errorMessages);
+        // errorMessages is a humanly readable message looking like this :
+        // 'The tag beginning with "foobar" is unopened'
+      }
+      throw error;
+    }
+
+    var buf = doc.getZip().generate({ type: 'nodebuffer' });
+
+    // // buf is a nodejs buffer, you can either write it to a file or do anything else with it.
+    savefile.save(encodeURI('Documentos/Templates/output.docx'))
+    //fs.writeFileSync('Documentos/Templates/output.docx', buf);
+    // (async () => {
+    //   // Opens the URL in the default browser.
+    //   await open(encodeURI('Documentos/Templates/output.docx'), { app: 'chrome' });
+    // })();
+    //var out = doc.getZip().generate({ type: "blob", mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" }) //Output the document using Data-URI
+    //fsaver.saveAs(buf, "output.docx")
+    return res.status(200).send();
+  },
   userLog: function userLog(req, res) {
     //console.log(req.body.usuario)
     return Usuario.findOne({

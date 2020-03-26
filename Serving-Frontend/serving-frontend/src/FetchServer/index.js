@@ -55,5 +55,9 @@ const existObra = (values) => {
 	return axios.post(`${ExAPI}/users/existObra`, values);
 };
 
+const generateDocx = () => {
+	return axios.post(`${ExAPI}/users/generateDocx`);
+};
+
 export default ExAPI;
-export { getAll, leer, editFile, editFilePdf, sendPanoXML, verCarousel, existObra, userLog, update, getById };
+export { getAll, leer, editFile, editFilePdf, sendPanoXML, verCarousel, existObra, userLog, update, getById, generateDocx };

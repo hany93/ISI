@@ -40,6 +40,7 @@ router.post('/users/sendPanoXML', controllers.sendPanoXML);
 router.post('/users/verCarousel', controllers.verCarousel);
 
 router.post('/users/existObra', controllers.existObra);
+router.post('/users/generateDocx', controllers.generateDocx);
 
 module.exports = router;
 
